@@ -1,0 +1,91 @@
+<h1>Featured Collection Groups</h1>
+
+<style>
+  .sortable-placeholder {
+    border: 1px solid #ccc;
+    background-color: #eee;
+  }
+  .sortable tr:hover { cursor: move }
+</style>
+
+<table class="table">
+  <thead>
+    <th colspan="2">Name</th>
+    <th># Collections</th>
+    <th>Visible</th>
+    <th colspan="2">Actions</th>
+  </thead>
+  <tbody class="sortable">
+    <% @featured_collection_groups.each do |fcg| %>
+      <tr class="fcg" data-id="<%= fcg.id %>">
+        <td><span class="glyphicon glyphicon-move"></span></td>
+        <td><%= fcg.collection_group.name %></td>
+        <td><%= fcg.collection_group.collections.size %></td>
+        <td>
+          <% if fcg.visible? %>
+            <span class="label label-success">Yes</span>
+          <% else %>
+            <span class="label label-default">No</span>
+          <% end %>
+        </td>
+        <td>
+          <% if fcg.visible? %>
+            <%= button_to "Hide",
+                          [:admin, fcg],
+                          method: :patch,
+                          params: { visible: false },
+                          class: 'btn btn-default btn-xs' %>
+          <% else %>
+            <%= button_to "Show",
+                          [:admin, fcg],
+                          method: :patch,
+                          params: { visible: true },
+                          class: 'btn btn-default btn-xs' %>
+          <% end %>
+        </td>
+        <td>
+          <%= button_to "Remove",
+                        [:admin, fcg],
+                        method: :delete,
+                        data: { confirm: 'Are you sure?' },
+                        class: 'btn btn-danger btn-xs' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= simple_form_for "reorder",
+      url: reorder_admin_featured_collection_groups_path do |f| %>
+
+  <input type="hidden" name="ids" id="ids" value="" />
+  <%= f.button :submit, value: "Save Order", id: "reorder", disabled: true %>
+
+<% end %>
+
+<script>
+  var setIDs = function() {
+    var ids = $(".fcg").map(function(){
+      return $(this).data("id");
+    }).toArray();
+
+    $("#ids").val(ids.join(","));
+    $("#reorder").removeAttr("disabled");
+
+    return ids;
+  };
+
+  var maintainRowWidth = function(e, tr) {
+    tr.children().each(function(index){
+      $(this).width($(this).width());
+    });
+    return tr;
+  };
+
+  $(".sortable").sortable({
+    placeholder: "sortable-placeholder",
+    cursor: "move",
+    helper: maintainRowWidth,
+    update: setIDs
+  }).disableSelection();
+</script>

@@ -1,0 +1,7 @@
+<ul class="breadcrumb">
+  <li><%= link_to 'Advisor Articles', admin_articles_path %></li>
+  <li><%= link_to @article.title, [:admin, @article] %></li>
+  <li>Edit</li>
+</ul>
+
+<%= render 'form' %>

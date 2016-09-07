@@ -1,0 +1,39 @@
+!!!
+%html{xmlns: "http://www.w3.org/1999/xhtml"}
+  %head
+    %meta{content: "width=device-width", name: "viewport"}
+    %meta{content: "text/html; charset=UTF-8", "http-equiv": "Content-Type"}
+    %title= Secrets.brand.name
+
+    = stylesheet_link_tag "mailer"
+
+  %body{bgcolor: "#FFFFFF"}
+    / HEADER
+    %table.head-wrap
+      %tr
+        %td
+        %td.header.container{bgcolor: "#FFFFFF"}
+          .content
+            %img.logo{ src: Secrets.brand.email_logo }
+        %td
+    / BODY
+    %table.body-wrap
+      %tr
+        %td
+        %td.container{bgcolor: "#FFFFFF"}
+          .content
+            %table
+              %tr
+                %td
+                  = yield
+              %tr
+                %td.padding-40-top
+              %tr.footercell-email
+                %td
+                  %p.footercell
+                    Questions? Concerns? Contact us at
+                    %a{href: "mailto:#{Secrets.brand.support_email}"} #{Secrets.brand.support_email}
+              %tr.footercell-privacy
+                %td
+                  %p.footercell
+                    %a{href: "https://www.#{Secrets.brand.domain}/legal"}Terms & Privacy Policy

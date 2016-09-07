@@ -1,0 +1,25 @@
+<h1>Edit Collection Group: <%= @collection_group.name %></h1>
+
+<p>
+Browse collections on the front-end and cut/paste the URLs of the collections
+you'd like to use into the text area below.  Collections will be displayed in
+the order they are listed.
+</p>
+
+<hr>
+<%= simple_form_for [:admin, @collection_group] do |f| %>
+
+  <%= f.input :name, required: false %>
+
+  <%= f.input :collections,
+    required: false,
+    as: 'text',
+    input_html: {
+      rows: 15,
+      value: @collection_group.collection_objects.map(&:to_feature).join("\n")
+    }
+  %>
+
+  <%= f.button :submit %>
+  <%= button_to "Cancel",  admin_collection_groups_path, class: "btn btn-danger" %>
+<% end %>

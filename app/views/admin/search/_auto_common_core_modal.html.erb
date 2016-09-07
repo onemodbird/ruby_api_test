@@ -1,0 +1,42 @@
+
+<div class="modal" id="auto-common-core-quick-view-<%= index %>" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span></button>
+        <h4 class="modal-title">Auto Common Core QuickView</h4>
+      </div>
+      <div class="modal-body">
+        <table class="table table-condensed">
+          <thead>
+            <tr>
+              <th>Assigned Common Core Tags</th>
+              <th>
+                Auto-Generated Common Core Tags
+                <span class="badge" style="background-color:#5cb85c">
+                  + <%= resource.auto_common_core_tags.size -
+                        resource.common_core_tags.size %>
+                </span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <% resource.auto_common_core_tags.each do |tag| %>
+              <tr>
+                <% if resource.common_core_tags.include?(tag) %>
+                  <td><span class="label label-default"><%= tag %></span></td>
+                  <td><span class="label label-default"><%= tag %></span></td>
+                <% else %>
+                  <td></td>
+                  <td><span class="label label-success"><%= tag %></span></td>
+                <% end %>
+              </tr>
+            <% end %>
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

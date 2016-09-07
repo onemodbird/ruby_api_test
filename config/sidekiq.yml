@@ -1,0 +1,13 @@
+:concurrency: 10
+:pidfile: tmp/pids/sidekiq.pid
+:queues:
+  - [mailers, 5]
+  - [realtime, 4]
+  - [tweets, 3]
+  - [default, 2]
+  - [import, 1]
+
+staging:
+  :concurrency: 10
+production:
+  :concurrency: 10

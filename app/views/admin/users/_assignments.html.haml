@@ -1,0 +1,12 @@
+%table.table.table-condensed
+  %thead
+    %th{ width: "5%" } CET
+    %th Name
+    %th Assigned Date
+  %tbody
+    - assignments.sort_by{ |asgn| [asgn.flags["cet"], asgn.name].join }.each do |assignment|
+      %tr
+        %td= assignment.flags["cet"] ? "✓" : nil
+        %td= assignment.name
+        %td= assignment.created_at.strftime("%m/%d/%Y")
+

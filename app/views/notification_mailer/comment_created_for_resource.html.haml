@@ -1,0 +1,12 @@
+%p.sub.last
+  - if @comment.user.profile_photo_url
+    = image_tag @comment.user.profile_photo_url, class: "avatar"
+  #{@comment.user.name} commented on a resource
+%p.lead= @commentable.name
+
+%p.sub
+  #{@comment.content}
+%p.cta.callout
+  %a.button{ href: @commentable.link }
+    Visit the Resource
+= render "notification_settings", user: @user

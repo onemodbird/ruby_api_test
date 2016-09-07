@@ -1,0 +1,19 @@
+%h3
+  Hi,
+%p.lead
+<<<<<<< HEAD
+  You've been invited by #{@invitation.user.display_name} to join the #{@invitation.chat.name} chat at greenprint Learning.
+%p.sub
+  greenprint Learning Chats™ make it easy to join in and follow along with your favorite educational chats.
+=======
+  You've been invited by #{@invitation.user.display_name} to join the #{@invitation.chat.name} chat at Participate Learning.
+%p.sub
+  Participate Learning Chats™ make it easy to join in and follow along with your favorite educational chats.
+>>>>>>> parent of 0bd3464... customize to greenprintmedia
+  Track the converation, resources, and Q&A sessions as they're happening, and revisit later to see all
+  the great resources and content!
+%p.cta.callout
+  Come join the conversation!
+  %br
+  %a.button{ href: @invitation.url }
+    Join #{@invitation.chat.name}

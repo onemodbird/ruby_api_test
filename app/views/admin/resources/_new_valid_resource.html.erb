@@ -1,0 +1,30 @@
+<h1>Confirm Webpage Resource</h1>
+
+<p>
+The URL you entered appears to be for a <strong>Webpage</strong>
+resource (not an app or video resource).
+</p>
+
+<p>
+If this is correct, click the <strong>Create Resource</strong> button below.
+</p>
+
+<p>
+If the URL was entered incorrectly, click the <strong>Cancel</strong>
+button and try again.
+</p>
+
+<p>
+If you believe there is an error and the URL should be detected as a video
+or app, please send us the URL and let us know.
+</p>
+
+<hr>
+
+<%= simple_form_for [:admin, @resource] do |f| %>
+  <%= f.input :kind, as: :hidden %>
+  <%= f.input :url, as: :hidden %>
+  <%= f.input :url, label: "Resource URL", disabled: true %>
+  <%= f.button :submit %>
+  <%= link_to 'Cancel', :back, class: 'btn btn-danger' %>
+<% end %>

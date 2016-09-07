@@ -1,0 +1,55 @@
+<%= paginate @resources, theme: 'twitter-bootstrap-3' %>
+
+<% @resources.each_with_index do |r,i| %>
+  <%= render "admin/search/result_modal", resource: r, index: i %>
+  <%= render "admin/search/auto_common_core_modal", resource: r, index: i %>
+<% end %>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Kind</th>
+      <th>Name</th>
+      <th></th>
+      <th>Price</th>
+      <th>Score</th>
+      <th>#&nbsp;Reviews</th>
+      <th>OER</th>
+      <th>Reviews</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @resources.each_with_index do |u,i| %>
+      <tr>
+        <td><%= image_tag u.image_url,
+                          style: 'min-width:75px;max-width:75px;',
+                          class: 'img-thumbnail' %></td>
+
+        <td class="text-center">
+          <span class="label label-<%= {'ios-app' => 'primary', 'android-app' => 'success', 'video' => 'danger', 'webpage' => 'warning'}.fetch(u.content_type) %>"><%= u.content_type.sub('-app', '') %></span>
+        </td>
+        <td>
+          <%= link_to u.name, [:admin, u] %>
+          <br>
+          <a href="<%= u.url %>" target="_blank" class="text-muted"><small><%= u.url %></small></a>
+        </td>
+        <td>
+          <button class="btn btn-sm btn-default" data-toggle="modal" data-target="#quick-view-<%= i %>"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+          <br>
+          <button class="btn btn-sm btn-default" data-toggle="modal" data-target="#auto-common-core-quick-view-<%= i %>" style="margin-top:5px"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span></button>
+        </td>
+        <td><%= u.free? ? content_tag(:strong, u.price) : u.price %></td>
+        <td class="text-center"><span class="badge"><%= u.score.round(1) %></span></td>
+        <td class="text-center"><span class="badge"><%= u.reviews.size %></span></td>
+        <td class="text-center"><span class="badge"><%= u.oer ? "✓" : nil %></span></td>
+        <td>
+          <%= render "admin/search/reviews", reviews: u.reviews %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= paginate @resources, theme: 'twitter-bootstrap-3' %>
+

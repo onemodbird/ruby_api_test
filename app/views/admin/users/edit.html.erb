@@ -1,0 +1,24 @@
+<h1>Edit User</h1>
+
+<hr>
+
+<%= simple_form_for [:admin, @user] do |f| %>
+  <% if current_user.superuser? %>
+    <%= f.input :access_locked?, as: :boolean, label: 'Access locked' %>
+    <%= f.input :active?, as: :boolean, label: 'Active' %>
+    <%= f.input :visible, as: :boolean %>
+  <% end %>
+
+  <% %w(name email bio google_profile_id twitter_username
+        external_profile_url_1 external_profile_url_2
+        password password_confirmation).each do |field| %>
+      <%= f.input field, as: (field == "email" ? :email : nil) %>
+  <% end %>
+
+  <%= f.button :submit %>
+  <%= link_to "Cancel",
+              (current_user.superuser? ? admin_users_path : admin_path),
+              class: 'btn btn-danger' %>
+<% end %>
+<br>
+<br>

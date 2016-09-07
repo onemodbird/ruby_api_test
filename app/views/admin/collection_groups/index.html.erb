@@ -1,0 +1,48 @@
+<h1>Collection Groups</h1>
+
+  <div class="row">
+    <button onclick="$('#group-frm').slideToggle(function(){
+      $('#group-name').focus();});return false;"
+      class="btn btn-default">Add Group</button>
+  </div>
+
+
+  <div class="row" id="group-frm" style="display:none">
+    <hr>
+    <%= simple_form_for [:admin, @collection_group] do |f| %>
+
+      <%= f.input :name, required: false %>
+
+      <%= f.button :submit %>
+      <button class="btn btn-danger" onclick="$('#group-frm').slideToggle();return false;">Cancel</button>
+    <% end %>
+    <hr>
+  </div>
+
+
+<table class="table">
+  <thead>
+    <th>Name</th>
+    <th># Collections</th>
+  </thead>
+  <tbody>
+    <% @collection_groups.each do |cg| %>
+      <tr>
+        <td><%= link_to cg.name, [:edit, :admin, cg] %></td>
+        <td><%= cg.collections.size %></td>
+        <td>
+          <% if cg.featured? %>
+            <span class="label label-success">featured</span>
+          <% else %>
+            <%= button_to "Feature",
+                          admin_featured_collection_groups_path(
+                            collection_group_id: cg.id
+                          ),
+                          method: :post,
+                          class: 'btn btn-default btn-xs' %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

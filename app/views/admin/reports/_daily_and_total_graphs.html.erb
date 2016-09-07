@@ -1,0 +1,17 @@
+<h3>Per Day</h3>
+<canvas id="daily" width="1000" height="400"></canvas>
+
+<h3>Total</h3>
+<canvas id="total" width="1000" height="400"></canvas>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.js"></script>
+<script>
+  var ctx = document.getElementById("daily").getContext("2d");
+  var data = <%= raw daily.to_json %>;
+  var myNewChart = new Chart(ctx).Line(data);
+
+  var ctx2 = document.getElementById("total").getContext("2d");
+  var data2 = <%= raw total.to_json %>;
+  var myNewChart2 = new Chart(ctx2).Line(data2);
+</script>
+

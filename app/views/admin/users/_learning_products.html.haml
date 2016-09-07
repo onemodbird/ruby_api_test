@@ -1,0 +1,12 @@
+%table.table.table-condensed
+  %thead
+    %th Type
+    %th Name
+    %th Created Date
+  %tbody
+    - @learning_products.sort_by(&:kind).each do |lp|
+      %tr
+        %td= lp.kind
+        %td
+          %a{ href: lp.link }= lp.name
+        %td= lp.created_at.strftime("%m/%d/%Y")

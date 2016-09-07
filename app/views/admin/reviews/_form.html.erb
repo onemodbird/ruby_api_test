@@ -1,0 +1,38 @@
+
+<%= simple_form_for [:admin, @resource, @review] do |f| %>
+
+  <% if current_user.superuser? %>
+    <%= f.association :user, collection: User.order(:name) %>
+  <% end %>
+
+  <%= render 'score_input_buttons',
+    label: 'Educational Content',
+    hint: 'This resource features specific educational objectives, fosters critical thinking, and adapts to skill levels.',
+    field: 'content_score',
+    value: @review.content_score %>
+
+  <%= render 'score_input_buttons',
+    label: 'Features & Production Value',
+    hint: 'This resource is unique in its concept, design and approach. If interactive, it assesses progress and proficiency for teachers and/or parents.',
+    field: 'feature_score',
+    value: @review.feature_score %>
+
+  <%= render 'score_input_buttons',
+    label: 'Engagement',
+    hint: 'This resource is intellectually stimulating, has instructions that are clear and simple, and is well-suited to its targeted age group.',
+    field: 'engagement_score',
+    value: @review.engagement_score %>
+
+  <%= f.input :comment,
+    hint: 'One or two paragraph explanation of why you endorse the resource, and how it is best used within an educational context.',
+    input_html: { rows: 5 } %>
+
+  <br>
+
+  <%= f.button :submit %>
+  <%= link_to "Cancel", :back, class: 'btn btn-danger' %>
+
+  <br>
+  <br>
+
+<% end %>

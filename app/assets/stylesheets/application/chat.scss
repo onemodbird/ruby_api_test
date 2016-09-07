@@ -1,0 +1,31 @@
+.chat-promo-message {
+  span.canceled {
+    display: none;
+  }
+  &.canceled {
+    background: #f2f2f2;
+    border: #f2f2f2;
+    span.canceled {
+      display: inline;
+    }
+    a.close {
+      display: none;
+    }
+  }
+}
+
+.chat-promos {
+  img {
+    width: 100px;
+    border: 1px solid #ccc;
+  }
+}
+
+.upcoming-promos {
+  img {
+    width: 30px;
+    border: 1px solid #ccc;
+    float: right;
+    margin: -3px 8px 0 0;
+  }
+}

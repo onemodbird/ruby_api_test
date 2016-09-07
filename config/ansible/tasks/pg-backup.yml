@@ -1,0 +1,16 @@
+
+    ### DATABASE BACKUP
+    - name: install s3cmd
+      apt: pkg=s3cmd
+    - name: install awscli
+      apt: pkg=awscli
+    - name: upload s3cmd config
+      copy: src=s3cfg dest=/home/appo/.s3cfg owner=appo group=appo mode=0400
+    - name: create .aws config directory
+      file: path=/home/appo/.aws state=directory owner=appo group=appo mode=0700
+    - name: upload awscli config
+      copy: src=awscli.conf dest=/home/appo/.aws/config owner=appo group=appo mode=0400
+    - name: upload DB backup script
+      copy: src=db-backup.sh dest=/home/appo/ owner=appo group=appo mode=0500
+    - name: crontab entry for DB backup
+      cron: name=appolearning2015_production_pg_dump user=appo hour=6 minute=0 job=/home/appo/db-backup.sh

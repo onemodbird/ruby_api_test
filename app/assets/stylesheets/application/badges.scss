@@ -1,0 +1,19 @@
+.badge_assertion {
+  background: #eee;
+  display: inline-block;
+  margin: 8px;
+  padding: 25px 0;
+  width: 200px;
+  height: 200px;
+  text-align: center;
+  .name, .date {
+    display: block;
+  }
+  img {
+    width: 100px;
+    height: 100px;
+  }
+  a {
+    cursor: pointer;
+  }
+}

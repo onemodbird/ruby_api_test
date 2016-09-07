@@ -1,0 +1,75 @@
+<h1>Users</h1>
+
+<div class="well well-sm">
+  <%= simple_form_for 'users',
+                      method: :get,
+                      html: { class: 'form-inline' } do |f| %>
+
+    <%= f.input :q,
+                label: false,
+                placeholder: 'name or email',
+                required: false,
+                input_html: {
+                  name: 'q',
+                  value: params[:q]
+                } %>
+
+    <%= f.button :submit, "Search" %>
+
+  <% end %>
+</div>
+
+<div>
+  <%= link_to "New User", new_admin_user_path, class: 'btn btn-default' %>
+</div>
+
+<%= paginate @users, theme: 'twitter-bootstrap-3' %>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Name</th>
+      <th>Info</th>
+      <th>Flags</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @users.each do |u| %>
+      <tr>
+        <td><%= image_tag u.profile_photo_url, style: 'width:50px', class: 'img-circle' %></td>
+        <td><%= u.name %></td>
+        <td>
+          <% %w(email facebook_id twitter_id google_id).each do |field| %>
+            <% if (value = u.public_send(field)).present? %>
+              <b><%= "#{field}:" %></b> <%= value %> <br>
+            <% end %>
+          <% end %>
+        </td>
+        <td>
+          <% if u.active? %>
+            <span class="label label-success">Active</span>
+          <% else %>
+            <span class="label label-default">Inactive</span>
+          <% end %>
+          <% if u.visible? %>
+            <span class="label label-primary">Visible</span>
+          <% end %>
+          <% if u.superuser? %>
+            <span class="label label-warning">Superuser</span>
+          <% end %>
+          <% if u.access_locked? %>
+            <span class="label label-danger">Locked</span>
+          <% end %>
+        </td>
+        <td>
+          <%= link_to "Edit", [:edit, :admin, u] %>
+          | <%= link_to "View", [:admin, u] %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= paginate @users, theme: 'twitter-bootstrap-3' %>

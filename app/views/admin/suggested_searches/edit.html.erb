@@ -1,0 +1,18 @@
+<h1>Edit Suggested Searches</h1>
+
+<hr>
+
+<%= simple_form_for :suggested_searches do |f| %>
+  <%= f.input :value,
+    required: false,
+    label: 'Suggested searches',
+    as: 'text',
+    input_html: {
+      rows: 15,
+      value: @suggested_searches.value.join("\n")
+    }
+  %>
+
+  <%= f.button :submit %>
+  <%= link_to "Cancel", '/admin/suggested_searches', class: 'btn btn-danger' %>
+<% end %>

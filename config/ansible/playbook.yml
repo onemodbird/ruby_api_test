@@ -1,0 +1,275 @@
+---
+<<<<<<< HEAD
+- hosts: greenprint
+=======
+- hosts: participate
+>>>>>>> parent of 0bd3464... customize to greenprintmedia
+  remote_user: root
+  vars:
+    tls_files:
+      - appolearning.com.pem
+      - appolearning.com.key
+      - participate.com.pem
+      - participate.com.key
+    scout_key: 3WgurSTeMzSP2w3gMXqmP4l3GljoqOWN9yFoaQSk
+    scout_roles: api,admin,postgresql,elasticsearch,redis,sidekiq
+  pre_tasks:
+    - name: uninstall system ruby
+      apt:
+        pkg: ruby
+        state: absent
+    - name: get currently installed ruby version
+      command: ruby -e "print RUBY_VERSION"
+      register: current_ruby_version
+      ignore_errors: True
+    - include_vars: variables.local.yml
+  roles:
+    - role: joshualund.ruby-common
+      ruby_symlinks:
+        - bundle
+        - erb
+        - gem
+        - irb
+        - rake
+        - rdoc
+        - ri
+        - ruby
+      ruby_version: ruby-{{ install_ruby_version }}
+      ruby_download_location: "https://cache.ruby-lang.org/pub/ruby/ruby-{{ install_ruby_version }}.tar.gz"
+      ruby_bundler_flags: --no-document
+      when: current_ruby_version.rc != 0 or current_ruby_version.stdout != install_ruby_version
+
+    - role: DavidWittman.redis
+      redis_version: 3.0.3
+      redis_bind: 127.0.0.1
+      redis_maxmemory: 512mb
+      redis_maxmemory_policy: volatile-lru
+
+  tasks:
+    - name: set hostname
+      hostname: name="{{ hostname }}"
+      notify:
+        - restart scout
+
+    - name: firewall default deny
+      ufw: state=enabled policy=deny
+    - name: firewall allow SSH
+      ufw: rule=allow port=22 proto=tcp
+    - name: firewall allow HTTP
+      ufw: rule=allow port=80 proto=tcp
+    - name: firewall allow HTTPS
+      ufw: rule=allow port=443 proto=tcp
+    - name: disallow SSH password auth
+      lineinfile:
+        dest: /etc/ssh/sshd_config
+        state: absent
+        line: "PasswordAuthentication yes"
+      notify:
+        - restart ssh
+    - name: disallow SSH password auth
+      lineinfile:
+        dest: /etc/ssh/sshd_config
+        state: present
+        line: "PasswordAuthentication no"
+      notify:
+        - restart ssh
+    - name: create appo user
+      user: name=appo shell=/bin/bash
+    - name: create /home/appo/.ssh
+      file:
+        path: /home/appo/.ssh
+        state: directory
+        owner: appo
+        group: appo
+        mode: 0700
+    - name: appo ssh key
+      copy:
+        src: ssh/authorized_keys
+        dest: /home/appo/.ssh/authorized_keys
+        owner: appo
+        group: appo
+        mode: 0600
+    - name: appo ssh key
+      copy:
+        src: ssh/authorized_keys
+        dest: /root/.ssh/authorized_keys
+        owner: root
+        group: root
+        mode: 0600
+    - name: add CircleCI ssh deploy key
+      lineinfile:
+        dest: /home/appo/.ssh/authorized_keys
+        state: present
+        line: "{{ lookup('file', 'ssh/circleci') }}"
+      when: deploy_env == "staging"
+    - name: install apt requirements
+      become: yes
+      apt: pkg=aptitude
+    - name: update packages
+      apt: update_cache=yes cache_valid_time=86400
+    - name: upgrade packages
+      apt: upgrade=safe
+    - name: install postgresql
+      apt: pkg=postgresql,postgresql-contrib
+    - name: install java (for elasticsearch)
+      apt: pkg=openjdk-8-jre-headless
+    - name: install imagemagick
+      apt: pkg=imagemagick,libmagickcore-dev,libmagickwand-dev
+
+    - name: install elasticsearch
+      script: elasticsearch_install.sh creates=/etc/elasticsearch/elasticsearch.yml
+    - name: configure elasticsearch to only listen on localhost
+      lineinfile:
+        dest: /etc/elasticsearch/elasticsearch.yml
+        state: present
+        line: "network.host: 127.0.0.1"
+      notify:
+        - restart elasticsearch
+
+    - name: allow scripting in elasticsearch (line 1)
+      lineinfile:
+        dest: /etc/elasticsearch/elasticsearch.yml
+        state: present
+        line: "script.inline: true"
+      notify:
+        - restart elasticsearch
+
+    - name: allow scripting in elasticsearch (line 2)
+      lineinfile:
+        dest: /etc/elasticsearch/elasticsearch.yml
+        state: present
+        line: "script.indexed: true"
+      notify:
+        - restart elasticsearch
+
+    - service: name=elasticsearch enabled=yes
+
+    - name: install bundler
+      gem: name=bundler user_install=no state=latest
+    - name: nokogiri gem dependencies
+      apt: pkg=build-essential
+    - name: pg gem dependencies
+      apt: pkg=postgresql-server-dev-9.5
+
+    # mysql libs required for mysql2 gem required for viflearn DB import
+    - name: mysql2 gem dependencies
+      apt: pkg=libmysqlclient-dev
+
+    - name: hittimes build dependencies
+      apt: pkg=libgmp-dev
+    - name: install nodejs
+      apt: pkg=nodejs
+    - name: install git
+      apt: pkg=git
+    - name: install ansible dependencies for postgresql management
+      apt: pkg=python-psycopg2
+
+    - name: create app postgres user
+      postgresql_user:
+        name: appo
+        role_attr_flags: SUPERUSER
+        state: present
+      sudo: true
+      sudo_user: postgres
+
+    - name: create database appolearning2015_*
+      postgresql_db:
+        name: appolearning2015_{{deploy_env}}
+        encoding: UTF8
+        lc_collate: en_US.UTF-8
+        lc_ctype: en_US.UTF-8
+        owner: appo
+      sudo: true
+      sudo_user: postgres
+
+    - name: set app environment variables (system-wide) RAILS_ENV
+      lineinfile:
+        dest: /etc/environment
+        state: present
+        line: "RAILS_ENV=\"{{deploy_env}}\""
+
+    - name: reload environment in appo profile for cron
+      lineinfile:
+        dest: /home/appo/.profile
+        state: present
+        line: ". /etc/environment"
+
+    - name: cron to start eye process
+      cron:
+        name: Start Eye process
+        user: appo
+        special_time: reboot
+<<<<<<< HEAD
+        job: "/bin/bash -l -c 'cd /home/appo/greenprint-api/current && bundle exec eye load config/eye.rb'"
+=======
+        job: "/bin/bash -l -c 'cd /home/appo/participate-api/current && bundle exec eye load config/eye.rb'"
+>>>>>>> parent of 0bd3464... customize to greenprintmedia
+      tags:
+         - cron
+
+    # TODO: randomly generate SECRET_KEY_BASE
+    # ruby -rsecurerandom -e 'print SecureRandom.hex(64)'
+    # But... multiple servers in the same deploy_env need the same value and
+    # we don't want to do something that will work but cause cookie failures
+    #- name: set app environment variables (system-wide) SECRET_KEY_BASE
+    #  lineinfile:
+    #    dest: /etc/environment
+    #    state: present
+    #    line: "SECRET_KEY_BASE=\"BogusSecret\""
+
+
+    - name: install nginx
+      apt: pkg=nginx
+    - name: upload nginx config
+      copy: src=nginx.conf dest=/etc/nginx/nginx.conf backup=yes
+      notify:
+        - restart nginx
+
+    - name: upload nginx TLS files
+      copy:
+        src: "{{ certificate_directory }}/{{ item }}"
+        dest: /etc/nginx/{{ item }}
+        owner: root
+        group: root
+        mode: 600
+        backup: yes
+      with_items: "{{ tls_files }}"
+      notify:
+        - restart nginx
+
+    - name: passenger build dependencies
+      apt: pkg=libcurl4-openssl-dev,libpcre3-dev
+
+    - include: tasks/pg-backup.yml
+      when: deploy_env == "production"
+
+    # Gems for scout plugins
+    - name: install pg gem (for scout plugin)
+      gem: name=pg user_install=no
+    - name: install redis gem (for scout plugin)
+      gem: name=redis user_install=no
+    - name: install sidekiq gem (for scout plugin)
+      gem: name=sidekiq user_install=no
+
+    - name: install scoutapp.com server monitoring
+      script: scout_install.sh -y -k {{ scout_key }} -e {{ deploy_env }} -r {{ scout_roles }} creates=/usr/bin/scoutd
+
+    - name: upload scout config
+      template:
+        src: templates/scoutd.yml
+        dest: /etc/scout/scoutd.yml
+        owner: scoutd
+        group: scoutd
+        mode: 0640
+      notify:
+        - restart scout
+
+  handlers:
+    - name: restart elasticsearch
+      service: name=elasticsearch state=restarted
+    - name: restart ssh
+      service: name=ssh state=restarted
+    - name: restart nginx
+      service: name=nginx state=restarted
+    - name: restart scout
+      service: name=scout state=restarted

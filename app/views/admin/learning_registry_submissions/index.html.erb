@@ -1,0 +1,60 @@
+<% @submissions.each_with_index do |submission, index| %>
+  <div class="modal" id="quick-view-<%= index %>" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span></button>
+          <h4 class="modal-title">Resource QuickView</h4>
+        </div>
+        <div class="modal-body">
+          <table class="table table-condensed">
+            <tbody>
+              <tr>
+                <th>Name</th><td><%= submission.resource.name %></td>
+              </tr>
+              <tr>
+                <th>URL</th><td><%= link_to submission.resource.url, submission.resource.url, target: '_blank' %></td>
+              </tr>
+              <tr>
+                <th>Description</th><td><%= submission.resource.description %></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<% end %>
+
+<h1>Learning Registry Submissions</h1>
+<table class="table">
+  <thead>
+    <th>Created At</th>
+    <th>Resource Description</th>
+    <th></th>
+  </thead>
+  <tbody>
+    <% @submissions.each_with_index do |submission,index| %>
+      <tr>
+        <td><%= submission.created_at.strftime("%M/%e/%Y %l:%M%P") %></td>
+        <td><%= submission.resource.description %></td>
+        <td>
+          <button class="btn btn-sm btn-default" data-toggle="modal" data-target="#quick-view-<%= index %>"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+        </td>
+        <td>
+          <%= link_to "Approve",
+            admin_learning_registry_submission_path(submission, approve: true),
+            method: :put,
+            class: "btn btn-s btn-success flag" %>
+        </td>
+        <td>
+          <%= link_to "Reject",
+            admin_learning_registry_submission_path(submission, approve: false),
+            method: :put,
+            class: "btn btn-s btn-danger flag" %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

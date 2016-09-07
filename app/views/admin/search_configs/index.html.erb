@@ -1,0 +1,32 @@
+<h1>Search Configs</h1>
+
+<div>
+  <%= link_to "New Search Config", new_admin_search_config_path, class: 'btn btn-default' %>
+</div>
+
+<%= paginate @search_configs, theme: 'twitter-bootstrap-3' %>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Owner</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @search_configs.each do |sc| %>
+      <tr>
+        <td><%= sc.name %></td>
+        <td><%= sc.user.name %></td>
+        <td>
+          <%= link_to "Edit", [:edit, :admin, sc] %>
+          |
+          <%= link_to "Try", admin_search_path(search_config_id: sc.id) %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= paginate @search_configs, theme: 'twitter-bootstrap-3' %>

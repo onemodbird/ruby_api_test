@@ -1,0 +1,4 @@
+%p.sub
+  Change your notification setting by
+  = succeed "." do
+    %a{ href: absolutely_path("users/#{user.id}") } visiting your profile

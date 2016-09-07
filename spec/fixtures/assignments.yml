@@ -1,0 +1,28 @@
+interactions:
+  interaction_one:
+    title: Title One
+    form:
+      sections:
+        - name: Section A
+          inputs:
+            - name: input_a1
+              type: text
+              title: Input A-1
+        - name: Section B
+          inputs:
+            - name: input_b1
+              type: text
+              title: Input B-1
+            - name: input_b2
+              type: file
+              title: Input B-2
+
+  interaction_two:
+    title: Title Two
+    form:
+      sections:
+        - name: Section Z
+          inputs:
+            - name: input_z1
+              type: text
+              title: Input Z-1

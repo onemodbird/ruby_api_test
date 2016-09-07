@@ -1,0 +1,11 @@
+
+<%= simple_form_for [:admin, @tag_group] do |f| %>
+  <%= f.input :name %>
+  <%= f.input :tags_text,
+              label: "Tags",
+              hint: "One tag per line",
+              placeholder: "Tag 1\nTag 2\nTag 3",
+              input_html: { rows: 10 } %>
+  <%= f.button :submit %>
+  <a href="/admin/tag_groups" class="btn btn-danger">Cancel</a>
+<% end %>

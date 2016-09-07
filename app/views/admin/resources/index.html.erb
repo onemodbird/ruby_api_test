@@ -1,0 +1,106 @@
+<h1>Resources</h1>
+
+
+<div class="well well-sm">
+<div class="row">
+<%= simple_form_for 'resources',
+                    method: :get,
+                    html: { class: '' } do |f| %>
+
+<div class="col-xs-1">
+  <%= f.input :kind,
+              required: false,
+              collection: ['App', 'Video', 'Webpage'],
+              checked: -> (kind) {
+                if kinds = params.fetch(:resources, {})[:kind]
+                  kinds.include?(kind)
+                else
+                  true
+                end
+              },
+              as: :check_boxes %>
+</div>
+
+<div class="col-xs-1">
+  <%= f.input :price,
+              required: false,
+              collection: %w(Free Paid Both),
+              checked: -> (price) {
+                if prices = params.fetch(:resources, {})[:price]
+                  prices.include?(price)
+                else
+                  'Both' == price
+                end
+              },
+              as: :radio_buttons %>
+</div>
+
+<div class="col-xs-2">
+  <%= f.input :tags_approved,
+              label: 'Tags',
+              required: false,
+              collection: ['Approved', 'Unapproved', 'Both'],
+              checked: -> (content_type) {
+                if content_types = params.fetch(:resources, {})[:tags_approved]
+                  content_types.include?(content_type)
+                else
+                  'Both' == content_type
+                end
+              },
+              #hint: 'Includes grade levels, subjects, topics, & tags',
+              as: :radio_buttons %>
+</div>
+
+<div class="col-xs-2">
+  <%= f.input :cc_tags_approved,
+              label: 'Common core tags',
+              required: false,
+              collection: ['Approved', 'Unapproved', 'Both'],
+              checked: -> (content_type) {
+                if content_types = params.fetch(:resources, {})[:cc_tags_approved]
+                  content_types.include?(content_type)
+                else
+                  'Both' == content_type
+                end
+              },
+              as: :radio_buttons %>
+</div>
+
+<div class="col-xs-2">
+  <%= simple_form_sort f, ['Updated', 'Created', '# Reviews', '# CC Tags'] %>
+
+  <%= f.input :tag_like,
+              required: false,
+              input_html: {
+                value: params.fetch(:resources, {})[:tag_like]
+              } %>
+</div>
+
+<div class="col-xs-2">
+  <%= f.input :with,
+              required: false,
+              collection: ['Duplicate Reviews', 'Defunct', 'OER'],
+              checked: -> (value) {
+                if values = params.fetch(:resources, {})[:with]
+                  values.include?(value)
+                else
+                  false
+                end
+              },
+              as: :check_boxes %>
+</div>
+
+<div class="col-xs-1">
+  <%= f.button :submit, "Filter" %>
+</div>
+
+<% end %>
+</div>
+</div>
+
+
+<% if @resources.empty? %>
+  <p>No Results Found</p>
+<% else %>
+  <%= render "admin/search/results" %>
+<% end %>

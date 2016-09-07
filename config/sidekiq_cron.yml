@@ -1,0 +1,50 @@
+app_resource_update_manager:
+  cron: "* * * * *"
+  class: ResourceUpdateManagerJob
+  queue: import
+  args:
+    resource_type: app
+    interval: 86400 # 1 day
+    skip_defunct: false
+
+ibook_resource_update_manager:
+  cron: "* * * * *"
+  class: ResourceUpdateManagerJob
+  queue: import
+  args:
+    resource_type: ibook
+    interval: 86400 # 1 day
+    skip_defunct: false
+
+video_resource_update_manager:
+  cron: "* * * * *"
+  class: ResourceUpdateManagerJob
+  queue: import
+  args:
+    resource_type: video
+    interval: 86400 # 1 day
+    skip_defunct: false
+
+webpage_resource_update_manager:
+  cron: "* * * * *"
+  class: ResourceUpdateManagerJob
+  queue: import
+  args:
+    resource_type: app
+    interval: 604800 # 1 week
+    skip_defunct: true
+
+schedule_occurrence_update_job:
+  cron: "0 0 * * *"
+  class: ScheduleOccurrenceUpdateJob
+  queue: default
+
+schedule_occurrence_promo_generate_job:
+  cron: "*/5 * * * *"
+  class: ChatOccurrencePromoGenerateJob
+  queue: default
+
+chat_analytics_job:
+  cron: "0 * * * *"
+  class: ChatAnalyticsJob
+  queue: default

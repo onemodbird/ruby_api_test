@@ -1,0 +1,14 @@
+
+<div class="modal" id="quick-view-<%= index %>" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span></button>
+        <h4 class="modal-title">Resource QuickView</h4>
+      </div>
+      <div class="modal-body">
+        <%= render "admin/resources/show_info", resource: resource, edit: true %>
+      </div>
+    </div>
+  </div>
+</div>

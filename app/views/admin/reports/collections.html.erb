@@ -1,0 +1,35 @@
+<h1>Reports - Collections</h1>
+
+<%= paginate @collections, theme: 'twitter-bootstrap-3' %>
+
+<table class="table table-condensed table-hover">
+  <tr class="active">
+    <th>Name</th>
+    <th>User</th>
+    <th># Resources</th>
+  </tr>
+  <% @collections_grouped_by_date.each do |date, collections| %>
+    <tr class="active">
+      <th colspan="3"><%= format_date date %></th>
+    </tr>
+    <% collections.each do |c| %>
+      <tr>
+        <td><%= c.name %></td>
+        <td>
+          <% if c.system_generated %>
+            System Generated
+          <% elsif c.user.nil? %>
+            Not found
+          <% else %>
+            <%= c.user.name %>
+            <%= "<#{c.user.email}>" %>
+            <%= "via #{c.user.sign_in_via}" %>
+          <% end %>
+        </td>
+        <td><%= c.resources_count %></td>
+      </tr>
+    <% end %>
+  <% end %>
+</table>
+
+<%= paginate @collections, theme: 'twitter-bootstrap-3' %>

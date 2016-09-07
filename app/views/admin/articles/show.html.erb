@@ -1,0 +1,64 @@
+<ul class="breadcrumb">
+  <li><%= link_to 'Advisor Articles', admin_articles_path %></li>
+  <li><%= @article.title %></li>
+</ul>
+
+<div class="row">
+  <div class="col-xs-12">
+    <h3><%= @article.title %></h3>
+    <p>by <%= @article.user.name %></p>
+
+    <% if @article.published? %>
+      <p>Published <%= @article.published_at.strftime("%b %e %Y %l:%M%P") %></p>
+    <% end %>
+
+    <div class="btn-group">
+      <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#">
+        Actions
+        <span class="caret"></span>
+      </a>
+      <ul class="dropdown-menu">
+        <li>
+          <%= link_to 'Edit', edit_admin_article_path(@article) %>
+        </li>
+        <% if @article.published? %>
+          <li>
+            <%= link_to 'View on participate.com', GenerateUrl.for(@article), target: "_blank" %>
+          </li>
+        <% end %>
+        <li>
+          <% if @article.published? %>
+            <%= link_to 'Re-Publish', publish_admin_article_path(@article), method: :post, data: { confirm: "Re-publish this article? The published at timestamp will be updated to the current time" } %>
+          <% else %>
+            <%= link_to 'Publish', publish_admin_article_path(@article), method: :post, data: { confirm: "Publish this article? It will become live to the public." } %>
+          <% end %>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<hr>
+
+<div class="row">
+  <div class="col-xs-12">
+
+    <h4>Excerpt</h4>
+    <% if @article.excerpt.present? %>
+      <%= simple_format(@article.excerpt) %>
+    <% else %>
+      <div class="alert">
+        <strong>This post does not yet have an excerpt</strong>.
+        <br>Edit this post to add one.
+      </div>
+    <% end %>
+
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-12">
+    <h4>Post Body</h4>
+<%= raw Appo::Formatters::Article.markdown.render @article.body %>
+  </div>
+</div>

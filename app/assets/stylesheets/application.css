@@ -1,0 +1,8 @@
+/*
+*= require_self
+*= require bootstrap-sass-official
+*= require bootstrap-tags
+*= require recurring_select
+*= require wysiwym
+*= require_tree ./application
+*/

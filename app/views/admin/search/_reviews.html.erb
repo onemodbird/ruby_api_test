@@ -1,0 +1,22 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th>Reviewer</th>
+      <th>Content</th>
+      <th>Features</th>
+      <th>Engagement</th>
+      <th>Total</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% reviews.each do |r| %>
+      <tr>
+        <td><%= User.find(r.fetch('user_id')).name %></td>
+        <td><%= r.fetch('content_score') %></td>
+        <td><%= r.fetch('feature_score') %></td>
+        <td><%= r.fetch('engagement_score') %></td>
+        <td><%= r.fetch('total_score') %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

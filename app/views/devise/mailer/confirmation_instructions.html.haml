@@ -1,0 +1,19 @@
+%p
+  Thank you for registering an account with #{Secrets.brand.name} and adding to your education mastery! The more you interact with our fantastic features, the greater your expertise becomes. Please take a moment to
+  = link_to 'confirm your account', "https://api.#{Secrets.brand.domain}/users/confirmation?confirmation_token=#{@token}"
+  with #{Secrets.brand.name}.
+%p
+  Here's what you can accomplish once you are familiar with #{Secrets.brand.name}:
+
+%h4 Collections:
+%p Create public and private collections of resources around any topic or subject, whether your students are learning about how to count or studying Shakespeare.
+
+%h4 Collaboration:
+%p Invite other teachers and peers to collaborate in building an awesome and helpful collection!
+
+%h4 Find & Add Resources:
+%p Search and contribute to our growing database of educational resources.
+
+%p We’re always around to answer any questions you might have. You can try our live chat available on every page, or email us directly at #{Secrets.brand.support_email}.
+
+%p We appreciate all that you do.

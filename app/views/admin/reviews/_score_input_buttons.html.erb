@@ -1,0 +1,19 @@
+
+  <div class="form-group text optional">
+    <label class="text optional control-label" for=""><%= label %></label>
+    <div>
+      <div class="btn-group" data-toggle="buttons">
+        <% (0..10).each do |score| %>
+          <% checked = score == value %>
+          <% if checked %>
+            <label class="btn btn-default active">
+          <% else %>
+            <label class="btn btn-default">
+          <% end %>
+          <%= radio_button_tag "review[#{field}]", score, checked, autocomplete: 'off' %> <%= score %>
+          </label>
+        <% end %>
+      </div>
+    </div>
+    <p class="help-block"><%= hint %></p>
+  </div>

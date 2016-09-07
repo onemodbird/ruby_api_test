@@ -1,0 +1,9 @@
+<h1>New User</h1>
+
+<%= simple_form_for [:admin, @user] do |f| %>
+  <% %w(name email password password_confirmation).each do |field| %>
+    <%= f.input field, as: (field == "email" ? :email : nil) %>
+  <% end %>
+  <%= f.button :submit %>
+  <a href="/admin/users" class="btn btn-danger">Cancel</a>
+<% end %>

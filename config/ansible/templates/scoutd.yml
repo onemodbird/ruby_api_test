@@ -1,0 +1,4 @@
+account_key: {{ scout_key }}
+ruby_path: /usr/local/bin/ruby
+environment: {{ deploy_env }}
+roles: {{ scout_roles }}

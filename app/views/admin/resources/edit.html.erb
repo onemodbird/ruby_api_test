@@ -1,0 +1,106 @@
+<h1>Edit Resource</h1>
+
+<div>
+Kind: <%= @resource.kind %>
+</div>
+<div>
+Name: <%= @resource.name %>
+</div>
+<div>
+URL: <%= @resource.url %>
+</div>
+
+<hr>
+
+<%= simple_form_for [:admin, @resource] do |f| %>
+
+  <% if @resource.kind == "webpage" %>
+    <%= f.input :name %>
+  <% end %>
+
+  <% if @resource.kind == "webpage" && current_user.superuser? %>
+    <%= f.input :url, label: 'URL', required: false %>
+  <% end %>
+
+  <%= f.input :description,
+    hint: 'Teaser text that appears on search engine results page. Description should be general and between 30 and 50 words in length.',
+    input_html: { rows: 4 } %>
+
+  <div class="form-group text optional resource_grade_levels">
+    <label class="text optional control-label" for="resource_grade_levels">Grade levels</label>
+    <div>
+      <div class="btn-group" data-toggle="buttons">
+        <% Appo::ResourceTags::GRADES.each do |grade| %>
+          <% checked = @resource.grade_levels.include?(grade) %>
+          <% if checked %>
+            <label class="btn btn-default active">
+          <% else %>
+            <label class="btn btn-default">
+          <% end %>
+            <%= check_box_tag 'resource[grade_levels][]', grade, checked, autocomplete: 'off' %> <%= grade %>
+            <!--
+            <span class="glyphicon glyphicon-unchecked"></span>
+            -->
+          </label>
+        <% end %>
+      </div>
+    </div>
+    <p class="help-block">We encourage you to select all grade levels relevant to the resource.</p>
+  </div>
+
+
+  <div class="form-group text optional resource_subject_tags">
+    <label class="text optional control-label" for="resource_subject_tags">Subjects</label>
+    <%= hidden_field_tag 'resource[subject_tags]', @resource.subject_tags.to_json, id: 'resource-subject-tags-input' %>
+    <div>
+      <code>* Subject tags have been moved to the general tags field</code>
+    </div>
+  </div>
+
+
+  <div class="form-group text optional resource_topic_tags">
+    <label class="text optional control-label" for="resource_topic_tags">Topics</label>
+    <%= hidden_field_tag 'resource[topic_tags]', @resource.topic_tags.to_json, id: 'resource-topic-tags-input' %>
+    <div>
+      <code>* Topic tags have been moved to the general tags field</code>
+    </div>
+  </div>
+
+
+  <div class="form-group text optional resource_tags">
+    <label class="text optional control-label" for="resource_tags">Tags</label>
+    <%= hidden_field_tag 'resource[tags]', @resource.tags.to_json, id: 'resource-tags' %>
+    <div id="custom-resource-tags" class="tag-list"></div>
+    <script>
+      $(function() {
+        var tag_data = <%= raw @resource.tags.to_json %>;
+        $('#custom-resource-tags').tags({
+          tagData: tag_data,
+          afterAddingTag: (function(tag){
+            $('#resource-tags').val(JSON.stringify(tag_data));
+            return true;
+          }),
+          afterDeletingTag: (function(tag){
+            $('#resource-tags').val(JSON.stringify(tag_data));
+            return true;
+          })
+        });
+      });
+    </script>
+    <p class="help-block">We encourage you to include any term you believe best describes the resource and its capabilities.</p>
+  </div>
+
+  <div class="form-group text optional oer">
+    <label class="text optional control-label" for="oer">Open Educational Resource</label>
+    <%= f.input :oer, label: 'enabled' %>
+  </div>
+
+  <%= render "common_core_tagging" %>
+
+  <%= f.button :submit %>
+  <%= link_to 'Cancel', :back, class: 'btn btn-danger' %>
+
+  <br>
+  <br>
+
+<% end %>

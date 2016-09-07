@@ -1,0 +1,95 @@
+interactions:
+  upload_classroom_practice:
+    title: Upload Your Work
+    form:
+      sections:
+        - name: Classroom Practice
+          inputs:
+            - name: classroom-practice
+              type: file
+              label: Upload your work to complete this course.
+              title: Uploaded classroom practice
+
+  write_reflection:
+    title: Write a Reflection
+    form:
+      sections:
+        - name: Teacher Learning
+          inputs:
+            - name: teacher-learning
+              type: text
+              label: Write a reflection to complete this course.
+              title: Reflection
+
+  reflect_revise:
+    title: Reflect and Revise
+    form:
+      sections:
+        - name: Teacher Learning
+          inputs:
+            - name: teacher-learning-text
+              type: text
+              label: Tell us how the lesson went and reflect on the experience
+              title: Reflection
+          footer: |
+            <p>
+              Include responses to at least two of the questions below. Whenever possible, point to evidence from the student artifact.
+            </p>
+            <ul>
+              <li>How did this lesson impact your students’ global attitudes, skills, and knowledge?</li>
+              <li>What did you learn from teaching this lesson?</li>
+              <li>What other insights do you want to share about this lesson?</li>
+              <li>What kinds of growth have you seen from the beginning of the year in your students global attitudes, knowledge, and skill?</li>
+              <li>How have you grown as a global educator this year?</li>
+            </ul>
+        - name: Classroom Practice
+          inputs:
+            - name: classroom-practice-lesson-plan
+              type: file
+              label: Attach your lesson plan
+              title: Lesson plan
+        - name: Student Learning
+          inputs:
+            - name: student-learning-artifact
+              type: file
+              label: Attach a student artifact and reflection below. The student reflection (written, audio or video) should explain how the artifact and the lesson as a whole contributed to his/her learning.
+              title: Student artifact
+
+  reflect_revise_cet:
+    title: Reflect and Revise
+    form:
+      sections:
+        - name: Teacher Learning
+          header: |
+            <p>
+              This is the information that we will collect and send to the Department of State as evidence of completion of your visa requirements for this year.
+            </p>
+          inputs:
+            - name: teacher-learning-overview
+              type: text
+              label: Provide a general overview of the presentation/activity, including the topic and the estimated impact.
+              title: Overview
+            - name: teacher-learning-date
+              type: string
+              label: What was the date of the presentation/activity?
+              title: Date
+            - name: teacher-learning-location
+              type: string
+              label: What was the location of the presentation/activity?
+              title: Location
+            - name: teacher-learning-audience
+              type: text
+              label: What was the audience and who were the participants?
+              title: Audience & participants
+        - name: Classroom Practice
+          inputs:
+            - name: classroom-practice-materials
+              type: file
+              label: Whereas your presentation/activity was done inside or outside your classroom, upload below any materials you created for this occasion (e.g. slides, notes, etc).
+              title: Classroom materials
+        - name: Student Learning
+          inputs:
+            - name: student-learning-activity-implementation
+              type: file
+              label: Upload evidence of activity implementation, such as photos or videos from the event, artifacts produced by activity participants, participant reflections, etc.
+              title: Activity implementation

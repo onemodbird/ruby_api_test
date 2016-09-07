@@ -1,0 +1,79 @@
+:javascript
+  function disable_rule(button) {
+    $(button).parent().find(":input").prop("disabled", true);
+  }
+
+  $.fn.recurring_select.options = {
+    monthly: {
+      // week:    1     2     3     4     5      last
+      show_week: [true, true, true, true, false, true]
+    }
+  };
+
+  // a hack to be sure ...
+  $.fn.recurring_select.texts.order[-2] = "Last";
+%h1 Edit Chat #{@chat.archived_at.present? ? "- Archived" : ""}
+%hr
+= simple_form_for [:admin, @chat] do |f|
+  = f.input :name, required: false, as: :string, disabled: true
+  = f.input :description, required: false
+  = f.input :moderator_list, label: "Moderators", placeholder: "@Moderator1, @Moderator2...", required: false
+  = f.input :spammers, label: "Flagged Spammers", input_html: { value: "#{(@chat.spammers || []).join(",")}"}, placeholder: "12345, 56789", required: false, as: :string
+  = f.input :promos_enabled
+  = f.input :edcamp
+  = f.input :schedule_duration, required: false, as: :integer, label: "Duration", hint: "In minutes", input_html: { min: 1 }
+  - schedule_rules(@chat).each_with_index do |rule, i|
+    %label.optional.control-label
+      Recurrence rule ##{i + 1}
+    .form-inline
+      Start time (central time zone):
+      = time_field_tag "chat[schedule_times][]", rule_time_string(rule), class: "form-control"
+      &nbsp;
+      Repeats:
+      = f.select_recurring "schedule_rule_#{i}", nil, { allow_blank: true }, name: "chat[schedule_rules][]", class: "form-control"
+      %button.btn.btn-danger{ onclick: "disable_rule(this);", type: "button"} Delete
+  = render "new_recurrence_rule"
+  %br
+  %br
+  - Array(@chat.schedule&.recurrence_times).each_with_index do |time, i|
+    %label.optional.control-label
+      One-time Event ##{i + 1}
+    .form-inline
+      Start time (central time zone):
+      = time_field_tag "chat[schedule_single_occurrence_times][]", time.strftime("%H:%M"), class: "form-control"
+      &nbsp;
+      Date:
+      = date_field_tag "chat[schedule_single_occurrence_dates][]", time.strftime("%Y-%m-%d"), class: "form-control"
+      %button.btn.btn-danger{ onclick: "disable_rule(this);", type: "button"} Delete
+  = render "new_single_occurrence"
+  %br
+  %br
+  = f.button :submit
+  - if @chat.archived_at.nil?
+    = link_to "Archive", archive_admin_chat_path(@chat.id), method: :put, class: "btn btn-danger", data: { confirm: "Are you sure you want to archive #{@chat.name}?"}
+%br
+%br
+%h2 Upcoming Chats
+.row
+  .col-md-6
+    %table.table
+      %thead
+        %th Day
+        %th Time
+        %th Action
+      %tbody
+        - @occurrences.each do |o|
+          %tr
+            %td= o.start_time.strftime("%A")
+            %td
+              - if o.canceled
+                %s= formatted_occurrence_time o
+              - else
+                = formatted_occurrence_time o
+            %td
+              = simple_form_for [:admin, o] do |f|
+                = f.input :canceled, as: :hidden, input_html: { value: !o.canceled }
+                - if o.canceled
+                  = f.button :submit, "Re-enable", class: "btn btn-success"
+                - else
+                  = f.button :submit, "Cancel", class: "btn btn-danger"

@@ -1,0 +1,103 @@
+<h1>Dashboard</h1>
+
+<% if current_user.superuser? %>
+  <%= simple_form_for 'admin', method: :get do |f| %>
+    <%= f.input :user_id,
+                required: false,
+                collection: User.active.order(:name),
+                selected: user.id,
+                include_blank: true %>
+  <% end %>
+  <script>
+    $('#admin_user_id').change(function(){
+      this.form.submit();
+    });
+  </script>
+<% end %>
+
+<% if current_user.superuser? && current_user != user %>
+  <h3>Reviews for <%= @user.name %></h3>
+<% else %>
+  <h3>Your Reviews</h3>
+<% end %>
+
+
+<div>
+  <button onclick="$('#rsrc-frm').slideToggle(function(){
+    $('#resource_url').focus();});return false;"
+    class="btn btn-default">New Resource</button>
+</div>
+
+<div id="rsrc-frm" style="display:none">
+  <hr>
+  <%= simple_form_for [:admin, Resource.new] do |f| %>
+
+    <%= f.input :url,
+      label: "Resource URL",
+      required: false,
+      hint: raw('Must include <code>https://</code> or <code>http://</code> in front of any URL you select for web pages, YouTube and Vimeo videos, and app pages from iTunes and Google Play.') %>
+
+    <%= f.button :submit %>
+    <button class="btn btn-danger" onclick="$('#rsrc-frm').slideToggle();return false;">Cancel</button>
+  <% end %>
+  <hr>
+</div>
+
+
+<%= paginate @resources, theme: 'twitter-bootstrap-3' %>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Kind</th>
+      <th>Name</th>
+      <th>Content</th>
+      <th>Features</th>
+      <th>Engagement</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @resources.each do |resource| %>
+      <% reviews = resource.reviews.select{|r| r.fetch('user_id') == user.id} %>
+      <tr>
+        <td rowspan="<%= reviews.size %>">
+          <%= image_tag resource.image_url,
+                        style: 'min-width:50px;max-width:50px;',
+                        class: 'img-thumbnail' %>
+        </td>
+        <td class="text-center" rowspan="<%= reviews.size %>">
+          <span class="label label-<%= {'ios-app' => 'primary', 'android-app' => 'success', 'video' => 'danger', 'webpage' => 'warning'}.fetch(resource.content_type) %>"><%= resource.content_type.sub('-app', '') %></span>
+        </td>
+        <td rowspan="<%= reviews.size %>">
+          <%= link_to resource.name, [:admin, resource] %>
+          <br>
+          <a href="<%= resource.url %>" target="_blank" class="text-muted"><small><%= resource.url %></small></a>
+        </td>
+        <% if reviews.empty? %>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        <% else %>
+          <% rev = reviews.first %>
+          <td><%= rev.fetch('content_score') %></td>
+          <td><%= rev.fetch('feature_score') %></td>
+          <td><%= rev.fetch('engagement_score') %></td>
+          <td><%= link_to "Edit", edit_admin_resource_review_path(resource_id: resource.id, id: rev.fetch('id')) %>
+        <% end %>
+      </tr>
+      <% reviews.drop(1).each do |rev| %>
+        <tr>
+          <td><%= rev.fetch('content_score') %></td>
+          <td><%= rev.fetch('feature_score') %></td>
+          <td><%= rev.fetch('engagement_score') %></td>
+          <td><%= link_to "Edit", edit_admin_resource_review_path(resource_id: resource.id, id: rev.fetch('id')) %>
+        </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>
+
+<%= paginate @resources, theme: 'twitter-bootstrap-3' %>

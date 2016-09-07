@@ -1,0 +1,66 @@
+<style>
+  .markdown-preview img { max-width: 100% }
+</style>
+
+<div class="row">
+  <div id="blog-post-form" class="col-xs-6">
+
+    <%= simple_form_for([:admin, @article]) do |f| %>
+      <% if @article.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@article.errors.count, "error") %> prohibited this article from being saved:</h2>
+
+          <ul>
+          <% @article.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+
+      <fieldset>
+        <%= f.input :channel, collection: %w(advisor blog), include_blank: false %>
+        <%= f.input :user_id, collection: User.for_articles.order(:name), include_blank: false %>
+        <%= f.input :title %>
+        <%= f.input :body, input_html: { class: "markdown-editor", rows: 16 } %>
+        <%= f.input :excerpt,
+          hint: "No formatting other than linebreaks allowed.",
+          input_html: { rows: 8 } %>
+        <%= f.input :featured %>
+        <%= f.button :submit %>
+      </fieldset>
+
+    <% end %>
+  </div>
+
+  <div class="col-xs-6">
+    <div class="markdown-helper">
+      <div class="markdown-preview-container">
+        <div class="markdown-preview-header">
+          <h5>Preview</h5>
+        </div>
+        <div class="markdown-preview"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  $('.markdown-editor').wysiwym(Wysiwym.Markdown, {helpEnabled: false});
+
+  var converter = new showdown.Converter();
+  var previousValue = null;
+  var previewTextarea = $('.markdown-editor');
+  var previewOutput = $('.markdown-preview');
+  var updateLivePreview = function() {
+      var newValue = previewTextarea.val();
+      if (newValue != previousValue) {
+          previousValue = newValue;
+          var newHtml = $("<div>"+ converter.makeHtml(newValue) +"</div>");
+          previewOutput.html(newHtml);
+      }
+  }
+  setInterval(updateLivePreview, 200);
+</script>

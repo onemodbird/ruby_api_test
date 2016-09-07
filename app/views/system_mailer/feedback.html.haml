@@ -1,0 +1,7 @@
+- if @user
+  User: #{ link_to @user.name, @user.link }
+- else
+  User: not logged in
+%br
+%br
+= @content

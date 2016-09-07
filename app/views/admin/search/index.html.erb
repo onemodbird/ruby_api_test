@@ -1,0 +1,103 @@
+<h1>Search</h1>
+
+<div class="well well-sm">
+<div class="row">
+<%= simple_form_for 'search',
+                    method: :get,
+                    html: { class: '' } do |f| %>
+
+<div class="col-xs-3">
+  <%= f.input :query,
+              required: false,
+              input_html: { value: params.fetch(:search, {})[:query] },
+              placeholder: 'math, spelling, etc.' %>
+
+  <% if current_user.superuser? %>
+    <%= f.input :search_config_id,
+                required: false,
+                collection: @search_configs,
+                selected: -> (search_config) {
+                  search_config.id == search_config_id
+                },
+                include_blank: true %>
+
+  <% end %>
+</div>
+
+<div class="col-xs-2">
+  <%= f.input :content_type,
+              required: false,
+              collection: ['iOS Apps', 'Android Apps', 'Videos', 'Websites'],
+              checked: -> (content_type) {
+                if content_types = params.fetch(:search, {})[:content_type]
+                  content_types.include?(content_type)
+                else
+                  true
+                end
+              },
+              as: :check_boxes %>
+</div>
+
+<div class="col-xs-1">
+  <%= f.input :price,
+              required: false,
+              collection: %w(Free Paid),
+              checked: -> (price) {
+                if prices = params.fetch(:search, {})[:price]
+                  prices.include?(price)
+                else
+                  true
+                end
+              },
+              as: :check_boxes %>
+</div>
+
+<div class="col-xs-2">
+  <%= f.input :search_field,
+              required: false,
+              collection: ['All Fields', 'Tag Fields'],
+              checked: -> (search_field) {
+                if search_fields = params.fetch(:search, {})[:search_field]
+                  search_fields.include?(search_field)
+                else
+                  'All Fields' == search_field
+                end
+              },
+              disabled: search_config_id.present?,
+              as: :radio_buttons %>
+</div>
+
+<div class="col-xs-3">
+  <%= f.input :sort,
+              required: false,
+              collection: ['Relevancy', 'Relevancy + Score Boost', 'Score'],
+              checked: -> (sort) {
+                if sortp = params.fetch(:search, {})[:sort]
+                  sortp == sort
+                else
+                  'Relevancy + Score Boost' == sort
+                end
+              },
+              as: :radio_buttons %>
+</div>
+
+<div class="col-xs-1">
+  <%= f.button :submit, "Search" %>
+</div>
+
+<% end %>
+</div>
+</div>
+
+
+<% if params[:search] %>
+
+  <h3>Search Results</h3>
+
+  <% if @resources.empty? %>
+    <p>No Results Found</p>
+  <% else %>
+    <%= render "results" %>
+  <% end %>
+
+<% end %>

@@ -1,0 +1,30 @@
+<h1>Reports</h1>
+
+<p>
+  <%= link_to 'Download CSV', '/admin/reports/index_csv' %>
+</p>
+
+<table class="table table-condensed table-hover">
+  <% @metrics.metrics.each do |heading, fields_values| %>
+    <% next unless fields_values.is_a?(Hash) %>
+    <tr class="active">
+      <th colspan="2">
+        <%= heading %>
+        <% if heading == :collections %>
+          | <%= link_to 'view', 'reports/collections' %>
+          | <%= link_to 'graph', 'reports/collections_graph' %>
+        <% elsif heading == :users %>
+          | <%= link_to 'graph', 'reports/users_graph' %>
+        <% elsif heading == :resources %>
+          | <%= link_to 'graph', 'reports/resources_graph' %>
+        <% end %>
+      </th>
+    </tr>
+    <% fields_values.each do |field, value| %>
+      <tr>
+        <td><%= field %></td>
+        <td><%= value %></td>
+      </tr>
+    <% end %>
+  <% end %>
+</table>

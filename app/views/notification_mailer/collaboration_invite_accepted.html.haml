@@ -1,0 +1,8 @@
+%h3
+  Congrats!
+%p.sub
+  #{@collaboration.collaborator.display_name} has accepted your invitation to collaborate on #{@collaboration.collaboratable.name}.
+%p.cta.callout
+  %a.button{ href: @collaboration.link }
+    Let's Collaborate!
+= render "notification_settings", user: @user

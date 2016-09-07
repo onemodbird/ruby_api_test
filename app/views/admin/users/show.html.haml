@@ -1,0 +1,16 @@
+%h1 View User
+
+%ul
+  %li= "Name: #{@user.name}"
+  %li= "Email: #{@user.email}"
+
+
+<h2>Assignments</h2>
+= render "assignments", assignments: @assignments
+
+<h2>Badges</h2>
+= render "badges", user: @user
+
+<h2>Learning Products</h2>
+= render "learning_products", user: @user
+

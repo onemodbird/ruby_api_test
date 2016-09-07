@@ -1,0 +1,43 @@
+<h1>Search Queries</h1>
+
+<hr>
+
+<div>
+  Sort by:
+  <% btn_class = params[:field].blank? ? 'primary disabled ' : 'default' %>
+  <%= link_to 'Total', {field: nil}, class: "btn btn-#{btn_class} btn-xs" %>
+  <% @fields.each do |f,c| %>
+    <% btn_class = f == params[:field] ? 'primary disabled ' : 'default' %>
+    <%= link_to({field: f}, class: "btn btn-#{btn_class} btn-xs") do %>
+      <%= f %> <span class="badge"><%= c %></span>
+    <% end %>
+  <% end %>
+</div>
+
+<br>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Position</th>
+      <th>Query</th>
+      <th>Total</th>
+      <th>Bucket Counts</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @queries.each_with_index do |q, i| %>
+      <tr>
+        <td><%= i + 1 %></td>
+        <td><%= q.fetch('query') %></td>
+        <td><span class="badge"><%= q.fetch('count') %></span></td>
+        <td>
+          <% q.fetch('via').to_a.sort_by(&:first).each do |k,v| %>
+            <% btn_class = k == params[:field] ? 'primary' : 'default' %>
+            <span class="btn btn-<%= btn_class %> btn-xs disabled"><b><%= k %></b> <span class="badge"><%= v %></span></span>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

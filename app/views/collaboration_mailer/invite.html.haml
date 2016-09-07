@@ -1,0 +1,13 @@
+%h3
+%p.lead
+  - if @message
+    = @message
+  - else
+    You've been invited by #{@collaboration.user.display_name} to work together on a #{@collaboration.collaboratable_name} at #{Secrets.brand.name}!
+%p.sub
+  #{Secrets.brand.name} is a new platform that allows educators to quickly find and use the best digital resources and files - online videos, websites, apps, any other links - for lesson planning and preparation. Click on the link below to begin collaborating.
+%p.cta.callout
+  Click to accept this invitation!
+  %br
+  %a.button{ href: @link }
+    Start collaborating

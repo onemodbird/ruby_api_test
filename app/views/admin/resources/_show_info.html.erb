@@ -1,0 +1,153 @@
+<table class="table table-condensed">
+  <tbody>
+
+    <tr>
+      <th>Name</th><td><%= resource.name %></td>
+      <td></td>
+    </tr>
+
+    <tr>
+      <th>URL</th><td><%= link_to resource.url, resource.url, target: '_blank' %></td>
+      <td></td>
+    </tr>
+
+    <tr>
+      <th>Price</th><td><%= resource.price %></td>
+      <td></td>
+    </tr>
+
+    <tr>
+      <th>Grade levels</th>
+      <td class="grade-levels">
+        <% resource.correct_grade_levels.each do |grade| %>
+          <% label_type = resource.grade_levels.include?(grade) ? 'info' : 'danger' %>
+          <span class="label label-<%= label_type %>"><%= grade %></span>
+        <% end %>
+      </td>
+      <td>
+        <% if edit && current_user.superuser? %>
+          <% if resource.flags['grade_levels_approved'].nil? %>
+            <%
+              blue = '<span class="label label-info label-xs">blue</span>'
+              red = '<span class="label label-danger label-xs">red</span>'
+            %>
+
+            <div class="well well-sm">
+              <%= link_to "Use only #{blue}".html_safe,
+                [:flags, :admin, resource, flags: {grade_levels_approved: true}, auto_tag: false],
+                method: :patch,
+                remote: true,
+                class: "btn btn-xs btn-success auto-tag",
+                style: "margin-bottom:10px",
+                'data-auto-tag' => 'remove' %>
+
+              <%= link_to "Use #{red} and #{blue}".html_safe,
+                [:flags, :admin, resource, flags: {grade_levels_approved: true}, auto_tag: true],
+                method: :patch,
+                remote: true,
+                class: "btn btn-xs btn-success auto-tag",
+                'data-auto-tag' => 'add' %>
+            </div>
+          <% end %>
+        <% end %>
+      </td>
+    </tr>
+
+    <tr>
+      <th>Subject Tags</th>
+      <td>
+        <code>* Subject tags have been moved to the general tags field</code>
+      </td>
+      <td rowspan="3" style="white-space:nowrap">
+        <% if edit && current_user.superuser? %>
+          <div class="well well-sm">
+
+            <% hide = [false, nil].include?(resource.flags['tags_approved']) ?
+              "" :
+              "hide" %>
+            <%= link_to "Approve",
+              [:flags, :admin, resource, flags: {tags_approved: true}],
+              method: :patch,
+              remote: true,
+              class: "btn btn-xs btn-success flag #{hide}" %>
+
+            <% hide = [true, nil].include?(resource.flags['tags_approved']) ?
+              "" :
+              "hide" %>
+            <%= link_to "Reject",
+              [:flags, :admin, resource, flags: {tags_approved: false}],
+              method: :patch,
+              remote: true,
+              class: "btn btn-xs btn-danger flag #{hide}" %>
+
+          </div>
+        <% end %>
+      </td>
+    </tr>
+
+    <tr>
+      <th>Topic Tags</th>
+      <td>
+        <code>* Topic tags have been moved to the general tags field</code>
+      </td>
+    </tr>
+
+    <tr>
+      <th>Tags</th>
+      <td>
+        <% resource.tags.each do |tag| %>
+          <span class="label label-info"><%= tag %></span>
+        <% end %>
+      </td>
+    </tr>
+
+    <tr>
+      <th>Common Core Tags</th>
+      <td>
+        <% resource.common_core_tags.each do |tag| %>
+          <span class="label label-default"><%= tag %></span>
+        <% end %>
+      </td>
+      <td style="white-space:nowrap">
+        <% if edit && current_user.superuser? %>
+          <div class="well well-sm">
+
+            <% hide = [false, nil].include?(resource.flags['common_core_tags_approved']) ?
+              "" :
+              "hide" %>
+            <%= link_to "Approve",
+              [:flags, :admin, resource, flags: {common_core_tags_approved: true}],
+              method: :patch,
+              remote: true,
+              class: "btn btn-xs btn-success flag #{hide}" %>
+
+            <% hide = [true, nil].include?(resource.flags['common_core_tags_approved']) ?
+              "" :
+              "hide" %>
+            <%= link_to "Reject",
+              [:flags, :admin, resource, flags: {common_core_tags_approved: false}],
+              method: :patch,
+              remote: true,
+              class: "btn btn-xs btn-danger flag #{hide}" %>
+
+          </div>
+        <% end %>
+      </td>
+    </tr>
+
+
+    <tr>
+      <th>Description</th><td><%= resource.description %></td>
+      <td></td>
+    </tr>
+
+    <tr>
+      <th>OER</th><td><%= resource.oer %></td>
+      <td></td>
+    </tr>
+
+  </tbody>
+</table>
+
+
+

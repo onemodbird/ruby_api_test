@@ -1,0 +1,66 @@
+%h1 Chat Promos
+
+%br
+= simple_form_for [:admin, @chat_promo] do |f|
+  %table.table.chat-promos
+    %thead
+      %th
+        Key
+        %br
+        %br
+      %th{ width: "10%" }
+        Kind
+        %br
+        %br
+      %th
+        Time Offset
+        %br
+        %br
+      %th{ width: "40%" }
+        Text
+        %br
+        %small Templates: %{hashtag} %{chat_url}
+      %th
+        Image
+        %br
+        %br
+      %th
+    %tbody
+      - @chat_promos.each do |c|
+        %tr
+          %td= c.key
+          %td= c.kind
+          %td= c.time_offset
+          %td= c.text
+          %td= c.has_image? ? image_tag(c.image.url) : nil
+          %td= link_to "Disable", "/admin/chat_promos/#{c.id}", method: :delete, class: "btn btn-danger", data: { confirm: "Are you sure, this will cancel all future '#{c.key}' promos?" }
+      %tr
+        %td= f.input :key, required: true, as: :string, label: false
+        %td= f.input :kind, required: true, as: :select, label: false, collection: [:start, :end, :recurring]
+        %td= f.input :time_offset, required: true, as: :string, label: false, input_html: { value: 0 }
+        %td= f.input :text, required: true, label: false, as: :text
+        %td= f.file_field :image_file
+        %td= f.button :submit, "Add", class: "btn-primary"
+
+%h2 Upcoming Chats
+%table.table.upcoming-promos
+  %thead
+    %th Chat
+    %th Promos?
+    %th Time
+    %th Messages
+  %tbody
+    - @occurrences.each do |o|
+      %tr
+        %td= o.schedulable.name
+        %td= o.schedulable.promos_enabled ? "✓" : nil
+        %td= formatted_occurrence_time o
+        %td{ width: "63%" }
+          - o.scheduled_promos.sort_by{ |promo| promo.scheduled_at }.each do |promo|
+            .chat-promo-message.alert{class: classes_for_promo(promo)}
+              %span.label.label-warning.canceled Canceled
+              %a{ href: "#", class: "close", onclick: "Chat.disableMessage(event, '#{promo.id}')" } &times;
+              %span.label.label-pill.label-primary= promo.scheduled_at.strftime("%l:%M%P %Z")
+              %span= promo.text
+              - if promo.has_image?
+                = image_tag(promo.image.url)

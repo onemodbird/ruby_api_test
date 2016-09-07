@@ -1,0 +1,100 @@
+
+      <fieldset>
+        <%
+          current_cores = CommonCore.all.select{|cc| @resource.common_core_tags.include?(cc.name) }
+        %>
+        <legend>Selected Common Core Standards</legend>
+        <input type="hidden" name="resource[common_core_tags][]" />
+        <div class="input-group">
+          <table class="table table-bordered" class="span12">
+            <% current_cores.each do |cc| %>
+              <tr>
+                <td style="white-space:nowrap">
+                  <%= check_box_tag "resource[common_core_tags][]", cc.name, true %>
+                  <%= cc.name %>
+                </td>
+                <td><span class="help-block" style="margin-bottom:0"><%= cc.description %></span></td>
+              </tr>
+            <% end %>
+          </table>
+        </div>
+      </fieldset>
+
+      <script type="text/javascript">
+        var CommonCore = {};
+        CommonCore.math = false;
+        CommonCore.lang = false;
+        CommonCore.grades = [];
+        CommonCore.base = '#add-cc tr';
+        CommonCore.grade_map = 'K 01 02 03 04 05 06 07 08 09 10 11 12'.split(' ');
+        CommonCore.selector = null;
+        CommonCore.filter = function() {
+          var subject_query = [];
+          var grade_query = [];
+          var combined_query = [];
+          if(CommonCore.math) {
+            subject_query.push('[data-tag^=\'CCSS.Math.\']');
+          }
+          if(CommonCore.lang) {
+            subject_query.push('[data-tag^=\'CCSS.ELA-Literacy.\']');
+          }
+          for (i=0; i<CommonCore.grades.length; i++) {
+            if(CommonCore.grades[i]) {
+              grade_query.push('[data-grade-levels~=\''+ CommonCore.grade_map[i] +'\']');
+            }
+          }
+          for (i = 0; i < subject_query.length; i++) {
+            for(j = 0; j < grade_query.length; j++) {
+              combined_query.push(CommonCore.base + subject_query[i] + grade_query[j]);
+            }
+          }
+          CommonCore.selector = combined_query.join(',');
+          $(CommonCore.base).each(function(){
+            $(this).hide();
+          });
+          $(combined_query.join(',')).each(function(){
+            $(this).show();
+          });
+        };
+      </script>
+      <style>
+        #add-js .cc-filter { padding-right: 10px; display:inline; font-weight:normal; }
+      </style>
+      <fieldset id="add-js">
+        <%
+          possible_cores = CommonCore.all - current_cores
+        %>
+        <legend>Add Common Core Standards</legend>
+        <div class="input-group">
+          <label>Subject</label>
+          <input id="math" type="checkbox" onclick="CommonCore.math = !CommonCore.math; CommonCore.filter();" />
+          <label for="math" class="cc-filter">Math</label>
+          <input id="lang" type="checkbox" onclick="CommonCore.lang = !CommonCore.lang; CommonCore.filter();" />
+          <label for="lang" class="cc-filter">Literacy</label>
+        </div>
+        <div class="input-group">
+          <label>Grade</label>
+          <% (0..12).each do |i| %>
+            <input id="grade_<%= i %>"
+                   type="checkbox"
+                   onclick="CommonCore.grades[<%= i %>] = !CommonCore.grades[<%= i %>]; CommonCore.filter();" />
+                   <label for="grade_<%= i %>" class="cc-filter"><%= i == 0 ? 'K' : i %></label>
+          <% end %>
+        </div>
+        <p class="help-block">Select a subject and grade level to display relevant common core standards.</p>
+        <p class="help-block">Tag for Standards from all grade levels. Your work will be saved if you close out of one grade level and continue on with another.</p>
+        <div class="input-group">
+            <table class="table table-bordered" class="span12" id="add-cc">
+              <% possible_cores.each do |cc| %>
+                <tr data-tag="<%= cc.name %>" data-grade-levels="<%= cc.grade_levels.join(' ') %>" style="display:none">
+                  <td style="white-space:nowrap">
+                    <%= check_box_tag "resource[common_core_tags][]", cc.name %>
+                    <%= cc.name %>
+                  </td>
+                  <td><span class="help-block" style="margin-bottom:0"><%= cc.description %></span></td>
+                </tr>
+              <% end %>
+            </table>
+        </div>
+      </fieldset>
+

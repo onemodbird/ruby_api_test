@@ -1,0 +1,19 @@
+<label class="optional control-label">New recurrence rule</label>
+<div class="form-inline">
+
+  Start time (central time zone):
+  <input
+    type="time"
+    name="chat[schedule_times][]"
+    value=""
+    class="form-control" />
+
+  &nbsp;
+
+  Repeats:
+  <select name="chat[schedule_rules][]" class="form-control recurring_select">
+    <option value="null">- not recurring -</option>
+    <option value="custom">Change schedule...</option>
+  </select>
+
+</div>

@@ -1,0 +1,31 @@
+%h1 Badge Requirements
+
+%table.table
+  %thead
+    %th VIF ID
+    %th Course Title
+    %th Interaction
+    %th VIF Badge ID
+    %th Badge
+  %tbody
+    - @collections.each do |coll|
+      %tr{style: "background: #ccc"}
+        %td{colspan: 5}
+          %strong Collection - #{coll.name} (#{coll.flags["cet"] ? "cet" : "non-cet"})
+          - coll.resources.each do |resource|
+            - interactions = resource.content_blocks.where(kind: "interaction").order(:position)
+            - requirements = resource.badge_requirements
+            - interactions.each do |interaction|
+              - requirement = requirements.find_by(interaction_key: interaction.key)
+              %tr
+                %td= link_to resource.viflearn_k2_item_id, resource.url
+                %td= link_to resource.name, resource.url
+                %td= requirement.interaction_key
+                %td= requirement.badge.viflearn_badgeid
+                %td{align: "center"}
+                  = link_to requirement.badge.image_url, target: "_blank" do
+                    %strong= requirement.badge.name
+                    %br
+                    = File.basename(requirement.badge.image_url)
+                    %br
+                    %img{height: 80, width: 80, src: requirement.badge.image_url}

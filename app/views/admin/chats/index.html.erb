@@ -1,0 +1,47 @@
+<h1>Chats</h1>
+
+  <div class="row">
+    <button onclick="$('#chat-frm').slideToggle(function(){
+      $('#chat-name').focus();});return false;"
+      class="btn btn-default">Add Chat</button>
+  </div>
+
+
+  <div class="row" id="chat-frm" style="display:none">
+    <hr>
+    <%= simple_form_for [:admin, @chat] do |f| %>
+
+      <%= f.input :name, required: false, as: :string %>
+      <%= f.input :description, required: false %>
+
+      <%= f.button :submit %>
+      <button class="btn btn-danger" onclick="$('#chat-frm').slideToggle();return false;">Cancel</button>
+    <% end %>
+    <hr>
+  </div>
+
+
+<table class="table">
+  <thead>
+    <th>Name</th>
+    <th>Schedule</th>
+    <th>Moderators</th>
+    <th>Messages</th>
+    <th>Promos?</th>
+    <th>Flags</th>
+    <th></th>
+  </thead>
+  <tbody>
+    <% @chats.each do |c| %>
+      <tr class="<%= c.archived_at.present? ? 'danger' : '' %>">
+        <td><%= c.name %><%= c.archived_at.present? ? ' [Archived]' : '' %></td>
+        <td><%= schedule_to_s(c.schedule) %></td>
+        <td><%= c.moderator_list %></td>
+        <td><%= @message_counts[c.id].to_i %></td>
+        <td><%= c.promos_enabled ? "✓" : nil %></td>
+        <td><%= c.edcamp ? "edcamp" : nil %></td>
+        <td><%= link_to "Edit", [:edit, :admin, c] %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

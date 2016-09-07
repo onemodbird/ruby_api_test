@@ -1,0 +1,33 @@
+- user.badge_assertions.each do |ba|
+  .badge_assertion
+    %a{href: ba.badge.link}
+      %span.name
+        = ba.badge.name
+      %span.date
+        = ba.created_at.strftime("%m/%d/%Y")
+      %img{src: ba.badge.image_url}
+/   render() {
+/     return (
+/       <a className="badge-preview" href={ Helpers.badgePath(this.props.badge) }>
+/         <span className="title">
+/           { this.props.badge.name }
+/         </span>
+/         <hr />
+/         <span className="description focused">
+/           <span className="inner">
+/             <span className="secondary">
+/               Earned on
+/             </span>
+/             <span className="primary">
+/               { moment(this.props.badgeAssertion.created_at).format("LL") }
+/             </span>
+/           </span>
+/         </span>
+/         <span className="image">
+/           <img src={ this.props.badge.image_url } />
+/         </span>
+/       </a>
+/     )
+/   }
+
+/ }

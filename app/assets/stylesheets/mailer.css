@@ -1,0 +1,334 @@
+
+/* -------------------------------------
+      GLOBAL
+------------------------------------- */
+* {
+  margin: 0;
+  padding: 0;
+}
+
+* { 
+  font-family: "Helvetica Neue", "Helvetica", "Arial", "Sans Serif";
+}
+
+img {
+  max-width: 100%;
+}
+
+img.logo {
+  width: 100%;
+}
+
+.collapse {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  color: #33373A;
+  background-color: #FFFFFF;
+  font-size: 16px;
+  height: 100%;
+  line-height: 1.6;
+  width: 100% !important;
+  -webkit-font-smoothing:antialiased;
+  -webkit-text-size-adjust:none;
+}
+
+/* -------------------------------------
+    ELEMENTS
+------------------------------------- */
+a { 
+  color: #29B2E6;
+}
+
+.btn {
+  background-color: #29B2E6;
+  color: #FFF;
+  cursor: pointer;
+  display: inline-block;
+  font-weight: bold;
+  margin-right: 10px;
+  padding: 10px 16px;
+  text-align: center;
+  text-decoration:none;
+}
+
+p.callout {
+  background-color: #DEDFE1;
+  color: #33373A;
+  margin-bottom: 25px;
+  padding: 15px;
+  text-align: center;
+}
+
+p.caption {
+  color: #979797;
+  font-size: 13px;
+  margin-top: 10px;
+}
+
+p.footer {
+  color: #979797;
+  font-size: 13px;
+  text-align: left;
+}
+
+hr.footer {
+  background-color: #D1D1D1;
+  border: 0;
+  color: #D1D1D1;
+  height: 3px;
+  margin-bottom: 10px;
+}
+
+p.cta {
+  text-align: center;
+}
+
+.button {
+  background: #01B5B6;
+  border-radius: 2px;
+  color: #fff;
+  display: inline-block;
+  font-family: "Helvetica", "Arial", "Sans Serif";
+  font-weight: bold;
+  margin-right: 10px;
+  padding-bottom: 12px;
+  padding-left: 40px;
+  padding-right: 40px;
+  padding-top: 12px;
+  text-decoration: none;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+}
+
+table.social {
+  background-color: #ebebeb;
+}
+
+.social .soc-btn {
+  color: #FFF;
+  display: block;
+  font-size: 12px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  padding: 3px 7px;
+  text-decoration: none;
+  text-align: center;
+}
+
+a.fb { background-color: #3B5998 !important; }
+a.tw { background-color: #1daced !important; }
+a.gp { background-color: #DB4A39 !important; }
+a.ms { background-color: #000 !important; }
+
+.sidebar .soc-btn {
+  display: block;
+  width: 100%;
+}
+
+/* -------------------------------------
+    HEADER
+------------------------------------- */
+table.head-wrap {
+  width: 100%;
+}
+
+.header.container table td.logo { 
+  padding: 15px;
+}
+
+.header.container table td.label { 
+  padding: 15px;
+  padding-left: 0px;
+}
+
+/* -------------------------------------
+    BODY
+------------------------------------- */
+table.body-wrap { 
+  width: 100%;
+}
+.main-content {
+  font-weight: bold;
+}
+.footercell {
+  font-size: 8pt;
+  margin-bottom: 5px !important;
+  text-align: center;
+}
+.footercell-email {
+  height: 10px;
+}
+.footercell-privacy {
+  height: 0px;
+}
+
+.padding-40-top{
+  padding: 40px 0 0 0;
+}
+
+/* -------------------------------------
+    FOOTER
+------------------------------------- */
+table.footer-wrap { 
+  clear: both !important;
+  width: 100%;
+}
+
+.footer-wrap .container td.content  p {
+  border-top: 1px solid rgb(215,215,215);
+  padding-top: 15px;
+}
+
+.footer-wrap .container td.content p {
+  font-size: 10px;
+  font-weight: bold;
+}
+
+/* -------------------------------------
+    TYPOGRAPHY
+------------------------------------- */
+h1,h2,h3,h4,h5,h6 {
+  color:#30373D;
+  font-family: "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", "Lucida Grande", "Sans Serif";
+  line-height: 1.4;
+  margin-bottom:25px;
+}
+h1 small, h2 small, h3 small, h4 small, h5 small, h6 small { 
+  color: #6f6f6f;
+  font-size: 60%;
+  line-height: 0;
+  text-transform: none; 
+}
+
+h1 { font-weight:500; font-size: 44px;}
+h2 { font-weight:500; font-size: 30px;}
+h3 { font-weight:500; font-size: 27px;}
+h4 { font-weight:500; font-size: 23px;}
+h5 { font-weight:900; font-size: 17px;}
+h6 { font-weight:900; font-size: 14px; text-transform: uppercase; color:#444; }
+
+.collapse { margin:0 !important;}
+
+p, ul, ol {
+  color: #30373D;
+  font-size: 16px;
+  font-weight: normal;
+  line-height: 1.6;
+  margin-bottom: 30px;
+}
+p.lead { font-size: 22px; }
+p.last { margin-bottom: 0px;}
+
+ul li {
+  list-style-position: inside;
+  margin-bottom: 14px;
+  margin-left: 24px;
+}
+
+ol li {
+  list-style-position: outside;
+  margin-bottom: 14px;
+  margin-left: 32px;
+}
+
+blockquote {
+  border: 4px solid #F6F6F6;
+  margin: 30px 0;
+  padding: 10px;
+}
+
+blockquote p{
+  color: #33373b;
+  font-weight: 200;
+  line-height: 26px;
+  font-size: 16px;
+  margin: 0;
+}
+
+cite {
+  display: block;
+}
+
+.small { font-size: 12px; }
+.grey { color: #8C8D8F; }
+
+
+/* ---------------------------------------------------
+    RESPONSIVENESS
+    Nuke it from orbit. It's the only way to be sure.
+------------------------------------------------------ */
+
+/* Set a max-width, and make it display as block so it will automatically stretch to that width, but will also shrink down on a phone or something */
+.container {
+  clear:both !important;
+  display: block !important;
+  margin:0 auto !important; /* makes it centered */
+  max-width:600px !important;
+}
+
+/* This should also be a block element, so that it will fill 100% of the .container */
+.content {
+  display: block;
+  margin: 0 auto;
+  max-width: 600px;
+  padding: 15px;
+}
+
+/* Let's make sure tables in the content area are 100% wide */
+.content table { width: 100%; }
+
+/* Odds and ends */
+.column {
+  float: left;
+  width: 300px;
+}
+
+.column tr td { padding: 15px; }
+
+.column-wrap {
+  margin: 0 auto;
+  max-width: 600px!important;
+  padding: 0 !important;
+}
+
+.column table { width:100%; }
+
+.social .column {
+  float: left;
+  min-width: 279px;
+  width: 280px;
+}
+
+/* Be sure to place a .clear element after each set of columns, just to be safe */
+.clear { 
+  clear: both;
+  display: block;
+}
+
+/* -------------------------------------------
+    PHONE
+    For clients that support media queries.
+    Nothing fancy.
+-------------------------------------------- */
+@media only screen and (max-width: 600px) {
+
+a[class="btn"] { 
+  background-image: none !important;
+  display: block !important;
+  margin-bottom: 10px !important;
+  margin-right: 0 !important;
+}
+
+div[class="column"] {
+  float: none !important;
+  width: auto !important;
+}
+
+table.social div[class="column"] {
+  width: auto !important;
+}
+
+}

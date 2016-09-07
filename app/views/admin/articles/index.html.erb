@@ -1,0 +1,81 @@
+<div id="blog-index">
+
+  <div class="row">
+    <div class="span8">
+
+      <div class="page-header">
+        <h1>Articles</h1>
+      </div>
+
+      <div class="well well-sm">
+        <div class="row">
+        <%= simple_form_for "articles", method: :get do |f| %>
+          <div class="col-xs-1">
+            <%= simple_form_ternary f, :channel, %w(Advisor Blog Both) %>
+          </div>
+
+          <div class="col-xs-2">
+            <%= simple_form_ternary f, :published, %w(Published Unpublished Both) %>
+          </div>
+
+          <div class="col-xs-2">
+            <%= simple_form_ternary f, :featured, ["Featured", "Not Featured", "Both"] %>
+          </div>
+
+          <div class="col-xs-3">
+            <%= f.input :user_id,
+                        required: false,
+                        collection: User.where(id: Article.distinct.pluck(:user_id)).order(:name),
+                        selected: params[:user_id],
+                        include_blank: true %>
+          </div>
+
+          <div class="col-xs-2">
+            <%= simple_form_sort f, ["Created", "Published"] %>
+          </div>
+
+          <div class="col-xs-1">
+            <%= f.button :submit, "Filter" %>
+          </div>
+        <% end %>
+        </div>
+      </div>
+
+      <p>
+        <%= link_to "New Article",
+          new_admin_article_path,
+          class: "btn btn-default" %>
+      </p>
+
+      <table class="table">
+        <tbody>
+          <% @articles.each do |article| %>
+          <tr>
+            <td>
+              <h4><%= link_to article.title, [:admin, article] %></h4>
+              <div class="blog-created-by">Created by <%= article.user.name %></div>
+              <% if article.published_at.present? %>
+                <div class="blog-published-date muted">Published:
+                  <%= article.published_at.strftime("%b %e %Y %l:%M%P") %></div>
+              <% else %>
+                <div><span class="label label-warning">Unpublished</span></div>
+              <% end %>
+            </td>
+            <td>
+              <% if article.featured? %>
+                <span class="label label-info">Featured</span>
+              <% end %>
+            </td>
+            <td><%= link_to 'Edit', edit_admin_article_path(article) %></td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+      <%= paginate @articles, theme: 'twitter-bootstrap-3' %>
+
+    </div>
+  </div>
+
+
+</div>

@@ -1,0 +1,10 @@
+%p.lead
+  - if @comment.user.profile_photo_url
+    = image_tag @comment.user.profile_photo_url, class: "avatar"
+  #{@comment.user.name} commented on #{@commentable.name}:
+%p.sub
+  #{@comment.content}
+%p.cta.callout
+  %a.button{ href: @commentable.link }
+    Let's Collaborate!
+= render "notification_settings", user: @user

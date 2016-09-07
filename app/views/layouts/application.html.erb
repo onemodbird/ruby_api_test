@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title><%= Secrets.brand.domain %></title>
+
+  <%= stylesheet_link_tag    'application', media: 'all' %>
+  <%= javascript_include_tag 'application' %>
+  <%= csrf_meta_tags %>
+</head>
+<body role="document">
+
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+<div class="container">
+
+  <div class="navbar-header">
+    <button type="button"
+            class="navbar-toggle collapsed"
+            data-toggle="collapse"
+            data-target="#navbar"
+            aria-expanded="false"
+            aria-controls="navbar">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+<<<<<<< HEAD
+    <img src="https://www.greenprintmedia.org/images/logos/logo-vif-greenprint.png" alt="greenprint Learning" class="navbar-brand" style="padding:6px 20px 6px 0;">
+=======
+    <img src="https://www.participate.com/images/logos/logo-vif-participate.png" alt="Participate Learning" class="navbar-brand" style="padding:6px 20px 6px 0;">
+>>>>>>> parent of 0bd3464... customize to greenprintmedia
+  </div>
+
+  <div id="navbar" class="navbar-collapse collapse">
+
+    <% if current_user %>
+      <ul class="nav navbar-nav navbar-right">
+        <li><%= link_to "Profile", [:edit, :admin, current_user] %></li>
+        <li><%= link_to "Sign Out", destroy_user_session_path, method: :delete %></li>
+      </ul>
+    <% else %>
+      <ul class="nav navbar-nav navbar-right">
+        <li><%= link_to "Sign In", new_user_session_path %></li>
+      </ul>
+    <% end %>
+
+    <% if current_user %>
+      <ul class="nav navbar-nav">
+        <li class="<%= 'active' if request.path == '/admin' %>"><a href="/admin">Home</a></li>
+        <li class="<%= 'active' if request.path == '/admin/search' %>"><a href="/admin/search">Search</a></li>
+        <% if current_user && current_user.superuser? %>
+          <li class="dropdown <%= 'active' if request.path =~ %r{\A/admin/(users|tag_groups)} %>">
+            <a href="#"
+              class="dropdown-toggle"
+              data-toggle="dropdown"
+              role="button"
+              aria-expanded="false">
+              Superuser
+              <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="/admin/articles">Articles</a></li>
+              <li><a href="/admin/chats">Chats</a></li>
+              <li><a href="/admin/chat_promos">Chat Promos</a></li>
+              <li><a href="/admin/collection_groups">Collection Groups</a></li>
+              <li><a href="/admin/featured_collection_groups">Featured Collection Groups</a></li>
+              <li><a href="/admin/learning_registry_submissions">Learning Registry Submissions</a></li>
+              <li><a href="/admin/reports">Reports</a></li>
+              <li><a href="/admin/resources">Resources</a></li>
+              <li><a href="/admin/search_configs">Search Configs</a></li>
+              <li><a href="/admin/search_queries">Search Queries</a></li>
+              <li><a href="/admin/suggested_searches">Suggested Searches</a></li>
+              <li><a href="/admin/users">Users</a></li>
+            </ul>
+          </li>
+        <% end %>
+      </ul>
+    <% end %>
+
+  </div>
+
+</div>
+</nav>
+
+<div class="container" style="margin-top:50px;">
+
+  <% flash.each do |k,v| %>
+    <%
+      next if k == 'timedout'
+
+      if k.starts_with?('safe_')
+        k = k.sub(/\Asafe_/, '')
+        v = v.html_safe
+      end
+
+      alert_class = {
+        'alert' => 'danger',
+        'error' => 'danger',
+        'notice' => 'success',
+        'success' => 'success',
+        'warning' => 'warning',
+        'info' => 'info'
+      }
+    %>
+    <div role="alert" class="alert alert-<%= alert_class.fetch(k) %>">
+      <%= v %>
+    </div>
+  <% end %>
+
+  <%= yield %>
+</div>
+
+</body>
+</html>

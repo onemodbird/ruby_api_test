@@ -1,0 +1,15 @@
+<h1>Suggested Searches</h1>
+
+<hr>
+
+<%= link_to 'Edit Suggested Searches',
+  edit_admin_suggested_searches_path,
+  class: 'btn btn-default' %>
+
+<br><br>
+
+<ul>
+  <% @suggested_searches.each do |ss| %>
+    <li><%= ss %></li>
+  <% end %>
+</ul>

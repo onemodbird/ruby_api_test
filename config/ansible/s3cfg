@@ -1,0 +1,5 @@
+[default]
+access_key = AKIAISEJBGGPP7QBFANQ
+secret_key = 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
+use_https = True
+multipart_chunk_size_mb = 100
