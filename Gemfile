@@ -61,11 +61,9 @@ gem "ice_cube"
 gem "recurring_select"
 gem "skylight"
 gem "oauth"
-<<<<<<< HEAD
+
 gem "mysql2" # For greenprintmedia.org data import
-=======
-gem "mysql2" # For viflearn.com data import
->>>>>>> parent of 0bd3464... customize to greenprintmedia
+
 gem "sanitize"
 
 # Gnip streaming requirements

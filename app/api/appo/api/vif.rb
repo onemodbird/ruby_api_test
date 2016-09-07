@@ -5,7 +5,7 @@ module Appo
 <<<<<<< HEAD
       desc "Redirect legacy greenprintmedia.org urls"
 =======
-      desc "Redirect legacy viflearn.com urls"
+      desc "Redirect legacy greenprintmedia.org urls"
 >>>>>>> parent of 0bd3464... customize to greenprintmedia
       params do
         requires :id, type: Integer

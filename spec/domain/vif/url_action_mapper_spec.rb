@@ -67,7 +67,7 @@ module Vif
 <<<<<<< HEAD
               https://www.greenprintmedia.org/index.php/my-pd/latest
 =======
-              https://www.viflearn.com/index.php/my-pd/latest
+              https://www.greenprintmedia.org/index.php/my-pd/latest
 >>>>>>> parent of 0bd3464... customize to greenprintmedia
               /index.php/mybadges
               /index.php/mybadges/view/form

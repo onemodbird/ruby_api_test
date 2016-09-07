@@ -94,7 +94,7 @@ module Vif
 <<<<<<< HEAD
     uri.host = "www.greenprintmedia.org" if uri.host.blank?
 =======
-    uri.host = "www.viflearn.com" if uri.host.blank?
+    uri.host = "www.greenprintmedia.org" if uri.host.blank?
 >>>>>>> parent of 0bd3464... customize to greenprintmedia
     uri.to_s
   end

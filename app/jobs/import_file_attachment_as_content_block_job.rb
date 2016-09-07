@@ -8,7 +8,7 @@ class ImportFileAttachmentAsContentBlockJob
 <<<<<<< HEAD
     url = "https://www.greenprintmedia.org/media/k2/attachments/#{filename}"
 =======
-    url = "https://www.viflearn.com/media/k2/attachments/#{filename}"
+    url = "https://www.greenprintmedia.org/media/k2/attachments/#{filename}"
 >>>>>>> parent of 0bd3464... customize to greenprintmedia
 
     ContentBlock.transaction do

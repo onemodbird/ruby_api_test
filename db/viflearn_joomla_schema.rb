@@ -392,9 +392,9 @@ ActiveRecord::Schema.define(version: 0) do
     t.string  "filetitle",          limit: 255, default: "{title is blank}"
     t.string  "link",               limit: 255, default: "https://www.greenprintmedia.org/index.php/offline-file-confirmation"
 =======
-    t.string  "thumbnail",          limit: 255, default: "https://www.viflearn.com/images/main/icons/offline_doc.png"
+    t.string  "thumbnail",          limit: 255, default: "https://www.greenprintmedia.org/images/main/icons/offline_doc.png"
     t.string  "filetitle",          limit: 255, default: "{title is blank}"
-    t.string  "link",               limit: 255, default: "https://www.viflearn.com/index.php/offline-file-confirmation"
+    t.string  "link",               limit: 255, default: "https://www.greenprintmedia.org/index.php/offline-file-confirmation"
 >>>>>>> parent of 0bd3464... customize to greenprintmedia
     t.string  "requirement_type",   limit: 255
     t.string  "submissions_status", limit: 255, default: "Submitted online"

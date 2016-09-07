@@ -6,7 +6,7 @@ module Vif
 <<<<<<< HEAD
     let(:absolute_url) { "https://www.greenprintmedia.org#{url}" }
 =======
-    let(:absolute_url) { "https://www.viflearn.com#{url}" }
+    let(:absolute_url) { "https://www.greenprintmedia.org#{url}" }
 >>>>>>> parent of 0bd3464... customize to greenprintmedia
     let(:user) { create :user }
     let(:resource) do

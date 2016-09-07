@@ -19,7 +19,7 @@ module Appo
 <<<<<<< HEAD
           cal << "PRODID:-//greenprint Learning//greenprintmedia.org//EN"
 =======
-          cal << "PRODID:-//Participate Learning//participate.com//EN"
+          cal << "PRODID:-//greenprint Learning//greenprintmedia.org//EN"
 >>>>>>> parent of 0bd3464... customize to greenprintmedia
 
           yield cal
@@ -58,7 +58,7 @@ module Appo
         [].tap do |event|
           event << "BEGIN:VEVENT"
           event << "SUMMARY:#{schedulable.name}"
-          event << "UID:#{schedulable.id}@participate.com"
+          event << "UID:#{schedulable.id}@greenprintmedia.org"
           event << "DTSTAMP:#{dtstamp(schedulable)}"
           event << "DTSTART;TZID=America/Chicago:#{dtstart(schedulable)}"
           event << recurrence_rules(schedulable)

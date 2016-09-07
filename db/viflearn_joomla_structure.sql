@@ -718,9 +718,9 @@ CREATE TABLE `wlje4_admissions_document_checklist_applicant_items` (
   `filetitle` varchar(255) DEFAULT '{title is blank}',
   `link` varchar(255) DEFAULT 'https://www.greenprintmedia.org/index.php/offline-file-confirmation',
 =======
-  `thumbnail` varchar(255) DEFAULT 'https://www.viflearn.com/images/main/icons/offline_doc.png',
+  `thumbnail` varchar(255) DEFAULT 'https://www.greenprintmedia.org/images/main/icons/offline_doc.png',
   `filetitle` varchar(255) DEFAULT '{title is blank}',
-  `link` varchar(255) DEFAULT 'https://www.viflearn.com/index.php/offline-file-confirmation',
+  `link` varchar(255) DEFAULT 'https://www.greenprintmedia.org/index.php/offline-file-confirmation',
 >>>>>>> parent of 0bd3464... customize to greenprintmedia
   `requirement_type` varchar(255) DEFAULT NULL,
   `submissions_status` varchar(255) DEFAULT 'Submitted online',
